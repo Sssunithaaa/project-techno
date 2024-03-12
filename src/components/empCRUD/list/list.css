@@ -1,0 +1,96 @@
+/* list.css */
+
+.contain-table {
+  margin-top: 20px;
+}
+
+.stripped-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  color: black;
+}
+
+.stripped-table th,
+.stripped-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.stripped-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.stripped-table tr:nth-child(odd) {
+  background-color: #fff; /* Add background color for odd rows */
+}
+
+.stripped-table tr:hover {
+  background-color: #ddd;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.Edit-button,
+.Delete-button {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.Edit-button:hover,
+.Delete-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Search input styling */
+.search-input {
+  margin-bottom: 10px; /* Add some space below the search input */
+  transition: transform 0.2s ease-in-out; /* Adding smooth transition */
+}
+
+/* Apply styles to the input container */
+.search-input input {
+  padding: 10px; /* Add padding to the input */
+  height: 30px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Enlarge on hover */
+.search-input:hover {
+  transform: scale(1.05);
+}
+.pagination-button {
+  float: right;
+  margin-top: 10px;
+  display: flex;
+}
+
+.pagination-button button {
+  margin-left: 5px;
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
