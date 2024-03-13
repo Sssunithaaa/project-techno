@@ -1,4 +1,4 @@
-// CustomBar.jsx
+// CustomLeftBar.jsx
 import React, { useEffect, useRef } from "react";
 import { Bar } from "react-chartjs-2";
 import {
@@ -11,6 +11,9 @@ import {
   Legend,
 } from "chart.js";
 
+// Import LeftBarData from the correct location
+import { BarData } from "../../chart.js";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -20,17 +23,27 @@ ChartJS.register(
   Legend
 );
 
-const CustomBar = ({ barChartData }) => {
+const BarChart = () => {
   const chartContainer = useRef(null);
   const chartInstance = useRef(null);
 
   useEffect(() => {
+    const barChartData = {
+      labels: BarData.map((bar) => bar.label),
+      datasets: [
+        {
+          label: "Jobs",
+          data: BarData.map((data) => data.jobs),
+        },
+      ],
+    };
+
     if (barChartData && chartContainer.current) {
       const updatedData = {
         labels: barChartData.labels,
         datasets: barChartData.datasets.map((dataset) => ({
           ...dataset,
-          borderColor: "rgba(0, 128, 0, 50)",
+          borderColor: "rgba(128, 0, 128, 1)",
           borderWidth: 1,
           backgroundColor: createGradient(
             chartContainer.current.getContext("2d")
@@ -79,7 +92,7 @@ const CustomBar = ({ barChartData }) => {
         }
       );
     }
-  }, [barChartData]);
+  }, []);
 
   // Helper function to create a super light blue gradient fill
   const createGradient = (ctx) => {
@@ -97,4 +110,4 @@ const CustomBar = ({ barChartData }) => {
   return <canvas ref={chartContainer} />;
 };
 
-export default CustomBar;
+export default BarChart;

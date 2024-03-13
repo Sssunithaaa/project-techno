@@ -123,13 +123,6 @@ export const topDealUsers = [
     email: "khan@gmail.com",
     amount: "1.932",
   },
-  {
-    id: 7,
-    img: "rock.svg",
-    username: "Rock",
-    email: "Rock@gmail.com",
-    amount: "1.560",
-  },
 ];
 export const employeesData = [
   {

@@ -42,7 +42,7 @@ function List({ employees, handleEdit, handleDelete }) {
 
   return (
     <div className="contain-table" style={{ display: "block", width: "100%" }}>
-      <div>
+      <div className="items-per-page">
         <label>
           Items per page:
           <input

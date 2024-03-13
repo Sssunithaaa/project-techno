@@ -1,131 +1,54 @@
-import React, { useRef, useEffect } from "react";
-import { Chart } from "chart.js/auto";
-// Update the import path for shift1Data
-import { shift2Data } from "../../Charts/chart.js";
+// Shift1Chart.jsx
+import React from "react";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { shift2Data } from "../chart.js";
+import "chartjs-plugin-datalabels";
 
-const chart1_2_options = {
-  responsive: true,
-  maintainAspectRatio: true,
-  elements: {
-    point: {
-      radius: 1,
-    },
-  },
-  scales: {
-    x: {
-      ticks: {
-        display: true,
-        autoSkip: true,
-        maxRotation: 10,
-        color: "white",
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+function Shift2Chart() {
+  // Extract jobs data directly from shift1Data
+  const dataValues = shift2Data.map((dataPoint) => dataPoint.jobs);
+
+  const totalJobs = dataValues.reduce((acc, curr) => acc + curr, 0); // Calculate the total number of jobs
+
+  const data = {
+    datasets: [
+      {
+        label: "Shop 1",
+        data: dataValues,
+        backgroundColor: ["#3CB371", "#66CDAA"],
+        borderColor: ["#3CB371", "#66CDAA"],
+        circumference: 180,
+        rotation: 270,
       },
-      grid: {
-        display: false,
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      datalabels: {
+        display: false, // Turn off the default labels
+        formatter: (value) => {
+          // Display the overall percentage in the middle
+          const percentage = ((value * 100) / totalJobs).toFixed(2);
+          return percentage + "%";
+        },
+        font: {
+          size: "30", // Font size of the percentage text
+        },
       },
     },
-    y: {
-      ticks: {
-        display: true,
-        autoSkip: true,
-        color: "white",
-      },
-      grid: {
-        display: false,
-      },
-    },
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    // Set the background color of the chart to transparent
-    backgroundColor: "grey",
-  },
-  animation: {
-    duration: 1000, // Adjust the duration in milliseconds
-    easing: "easeInOutQuart", // Adjust the easing function
-  },
-
-  datasets: {
-    line: {
-      cubicInterpolationMode: "monotone", // Set to "monotone" for curvy lines
-    },
-  },
-};
-
-const gradientStroke = (ctx) => {
-  if (!ctx || !ctx.canvas) {
-    // Handle the case where ctx or ctx.canvas is undefined
-    console.error("Canvas context is undefined");
-    return null;
-  }
-
-  let gradientStroke = ctx.canvas
-    .getContext("2d")
-    .createLinearGradient(0, 230, 0, 50);
-
-  gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
-  gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
-  gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); // blue colors
-
-  return gradientStroke;
-};
-
-const Shift2Chart = () => {
-  const chartRef = useRef();
-  const chartInstance = useRef(null);
-
-  useEffect(() => {
-    const ctx = chartRef.current.getContext("2d");
-    let myChart;
-
-    if (chartInstance.current) {
-      // Destroy the previous chart instance if it exists
-      chartInstance.current.destroy();
-    }
-
-    myChart = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: shift2Data.map((item) => item.label),
-        datasets: [
-          {
-            label: "Jobs",
-            fill: true,
-            backgroundColor: "rgba(29,140,248,0)",
-            borderColor: "#1f8ef1",
-            borderWidth: 2,
-            borderDash: [],
-            borderDashOffset: 0.0,
-            pointBackgroundColor: "#1f8ef1",
-            pointBorderColor: "rgba(255,255,255,0)",
-            pointHoverBackgroundColor: "#1f8ef1",
-            pointBorderWidth: 20,
-            pointHoverRadius: 4,
-            pointHoverBorderWidth: 15,
-            pointRadius: 4,
-            data: shift2Data.map((item) => item.jobs),
-          },
-        ],
-      },
-      options: chart1_2_options,
-    });
-
-    chartInstance.current = myChart;
-
-    return () => {
-      // Destroy the chart before unmounting
-      if (myChart) {
-        myChart.destroy();
-      }
-    };
-  }, []);
+  };
 
   return (
-    <div className="big-chart-container">
-      <canvas ref={chartRef}></canvas>
+    <div style={{ width: "100%", height: "100%" }}>
+      <Doughnut data={data} options={options}></Doughnut>
     </div>
   );
-};
+}
 
 export default Shift2Chart;

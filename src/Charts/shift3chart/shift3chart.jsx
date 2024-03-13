@@ -2,14 +2,14 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { shift1Data } from "../chart.js";
+import { shift3Data } from "../chart.js";
 import "chartjs-plugin-datalabels";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function Shift1Chart() {
+function Shift3Chart() {
   // Extract jobs data directly from shift1Data
-  const dataValues = shift1Data.map((dataPoint) => dataPoint.jobs);
+  const dataValues = shift3Data.map((dataPoint) => dataPoint.jobs);
 
   const totalJobs = dataValues.reduce((acc, curr) => acc + curr, 0); // Calculate the total number of jobs
 
@@ -18,8 +18,8 @@ function Shift1Chart() {
       {
         label: "Shop 1",
         data: dataValues,
-        backgroundColor: ["#668ba4", "#dde0ab"],
-        borderColor: ["#668ba4", "#dde0ab"],
+        backgroundColor: ["#C0C0C0", "#708090"],
+        borderColor: ["#C0C0C0", "#708090"],
         circumference: 180,
         rotation: 270,
       },
@@ -51,4 +51,4 @@ function Shift1Chart() {
   );
 }
 
-export default Shift1Chart;
+export default Shift3Chart;

@@ -1,9 +1,40 @@
 /* list.css */
 
+/* Container styling */
 .contain-table {
   margin-top: 20px;
+  margin-bottom: 20px; /* Adjusted margin */
 }
 
+/* Search bar container */
+.search-bar-container {
+  display: none;
+  margin-bottom: 10px;
+}
+
+/* Search bar input */
+.search-bar {
+  width: 200px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+/* Items per page container */
+.items-per-page-container {
+  margin-bottom: 10px;
+}
+
+/* Items per page input */
+.items-per-page-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+/* Table styling */
 .stripped-table {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -22,13 +53,14 @@
 }
 
 .stripped-table tr:nth-child(odd) {
-  background-color: #fff; /* Add background color for odd rows */
+  background-color: #fff;
 }
 
 .stripped-table tr:hover {
   background-color: #ddd;
 }
 
+/* Text alignment classes */
 .text-center {
   text-align: center;
 }
@@ -41,6 +73,7 @@
   text-align: left;
 }
 
+/* Button styling */
 .Edit-button,
 .Delete-button {
   background-color: #007bff;
@@ -61,13 +94,12 @@
 
 /* Search input styling */
 .search-input {
-  margin-bottom: 10px; /* Add some space below the search input */
-  transition: transform 0.2s ease-in-out; /* Adding smooth transition */
+  margin-bottom: 10px;
+  transition: transform 0.2s ease-in-out;
 }
 
-/* Apply styles to the input container */
 .search-input input {
-  padding: 10px; /* Add padding to the input */
+  padding: 10px;
   height: 30px;
   width: 100%;
   border: 1px solid #ddd;
@@ -79,8 +111,10 @@
 .search-input:hover {
   transform: scale(1.05);
 }
+
+/* Pagination button styling */
 .pagination-button {
-  float: right;
+  float: left;
   margin-top: 10px;
   display: flex;
 }
@@ -89,6 +123,12 @@
   margin-left: 5px;
 }
 
+/* Hover effect for pagination button */
+.pagination-button:hover {
+  background-color: #0056b3;
+}
+
+/* Clearfix for float elements */
 .clearfix::after {
   content: "";
   display: table;
