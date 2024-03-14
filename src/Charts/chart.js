@@ -39,23 +39,23 @@ export const bigLineData = [
 export const shift1Data = [
   {
     jobs: 11,
-    cost: 12378,
+    cost: 12,
   },
   {
     jobs: 15,
-    cost: 345678,
+    cost: 32,
   },
   {
     jobs: 19,
-    cost: 234567,
+    cost: 21,
   },
   {
     jobs: 12,
-    cost: 234567,
+    cost: 34,
   },
   {
     jobs: 16,
-    cost: 234567,
+    cost: 21,
   },
   {
     jobs: 24,
@@ -63,7 +63,7 @@ export const shift1Data = [
   },
   {
     jobs: 29,
-    cost: 234567,
+    cost: 27,
   },
 ];
 

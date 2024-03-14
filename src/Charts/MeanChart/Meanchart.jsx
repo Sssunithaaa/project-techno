@@ -43,9 +43,40 @@ function MeanChart() {
     },
   };
 
+  const pluginOption = {
+    id: "plugin-option",
+    beforeDatasetsDraw: function (chart, args, pluginOptions) {
+      const { ctx, data } = chart;
+
+      ctx.save();
+      ctx.font = "24px Arial"; // Increased font size to 24px
+      ctx.fillStyle = "white";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      const x = chart.getDatasetMeta(0).data[0].x;
+      const y = chart.getDatasetMeta(0).data[0].y;
+
+      // Measure text height and divide by 2 to properly position the text
+      const textHeight = ctx.measureText("text").actualBoundingBoxAscent;
+      const yOffset = textHeight / 2;
+
+      // Adjust Y position to center text vertically
+      const adjustedY = y - yOffset;
+
+      ctx.fillText("MEAN", x, adjustedY);
+
+      ctx.restore();
+    },
+  };
+
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      <Doughnut data={data} options={options}></Doughnut>
+      <Doughnut
+        data={data}
+        options={options}
+        plugins={[pluginOption]}
+      ></Doughnut>
     </div>
   );
 }

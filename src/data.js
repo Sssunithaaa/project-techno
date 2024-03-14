@@ -123,6 +123,28 @@ export const topDealUsers = [
     email: "khan@gmail.com",
     amount: "1.932",
   },
+
+  {
+    id: 7,
+    img: "mahesh babu.svg",
+    username: "Mahesh Babu",
+    email: "babu@gmail.com",
+    amount: "3.668",
+  },
+  {
+    id: 8,
+    img: "prabhas.svg",
+    username: "Prabhas",
+    email: "darling@gmail.com",
+    amount: "3.256",
+  },
+  {
+    id: 9,
+    img: "ram.svg",
+    username: "Ram charan",
+    email: "Ram@gmail.com",
+    amount: "2.998",
+  },
 ];
 export const employeesData = [
   {
@@ -302,5 +324,48 @@ export const employeesData = [
     address: "Winterfell",
     efficiency: 92,
     phoneNumber: "555-1122",
+  },
+];
+
+export const ToolsData = [
+  {
+    id: 1,
+    name: "Hammer",
+    code: "HAM001",
+    quantity: 10,
+    maxLength: "12 inches",
+    cost: "$10",
+  },
+  {
+    id: 2,
+    name: "Screwdriver",
+    code: "SCRD002",
+    quantity: 15,
+    maxLength: "8 inches",
+    cost: "$5",
+  },
+  {
+    id: 3,
+    name: "Wrench",
+    code: "WRN003",
+    quantity: 8,
+    maxLength: "10 inches",
+    cost: "$8",
+  },
+  {
+    id: 4,
+    name: "Pliers",
+    code: "PLR004",
+    quantity: 12,
+    maxLength: "6 inches",
+    cost: "$6",
+  },
+  {
+    id: 5,
+    name: "Drill",
+    code: "DRL005",
+    quantity: 5,
+    maxLength: "14 inches",
+    cost: "$20",
   },
 ];

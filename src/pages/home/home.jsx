@@ -10,7 +10,7 @@ import Shift1Chart from "../../charts/shift1chart/shift1chart.jsx";
 import Shift2Chart from "../../charts/shift2chart/shift2chart.jsx";
 import Shift3Chart from "../../charts/shift3chart/shift3chart.jsx";
 import MeanChart from "../../charts/MeanChart/Meanchart.jsx";
-import BarChart from "../../charts/Barchart/leftBar/leftbar.jsx";
+
 const Home = () => {
   return (
     <div className="home">
@@ -45,9 +45,9 @@ const Home = () => {
         LEFTCHART
         <LeftChart />
       </div>
-      <div className="box box9">
+      {/* <div className="box box9">
         <BarChart />
-      </div>
+      </div> */}
     </div>
   );
 };

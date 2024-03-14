@@ -8,6 +8,7 @@ import Footer from "./components/footer/footer";
 import Menu from "./components/menu/menu";
 import React, { useState } from "react";
 import Login from "./pages/login/login.jsx";
+import Tools from "./pages/tools/tools.jsx";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -45,6 +46,10 @@ function App() {
         {
           path: "/machines",
           element: <Machines />,
+        },
+        {
+          path: "/tools",
+          element: <Tools />,
         },
       ],
     },

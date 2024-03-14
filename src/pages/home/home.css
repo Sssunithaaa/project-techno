@@ -10,7 +10,7 @@
   padding: 20px;
   border-radius: 10px;
   border: 2px solid whitesmoke;
-  background-color: rgba(173, 216, 230, 0.521);
+  /* background-color: rgba(173, 216, 230, 0.521); */
   transition: border-color 0.3s;
 
   &:hover {
@@ -25,7 +25,7 @@
 
 .box4 {
   grid-column: span 1;
-  grid-row: span 3;
+  grid-row: span 4;
 }
 
 .box7 {
@@ -45,6 +45,6 @@
 
   .box9 {
     grid-column: span 1;
-    grid-row: span 3;
+    grid-row: span 4;
   }
 }

@@ -1,84 +1,175 @@
-import "./employee.css";
 import React, { useState } from "react";
-import Swal from "sweetalert2";
-import { employeesData } from "../../data.js";
-import Add from "../../components/empCRUD/add/add.jsx";
-import Edit from "../../components/empCRUD/edit/edit.jsx";
-import Delete from "../../components/empCRUD/delete/delete.jsx";
-import Header from "../../components/empCRUD/Eheader/header.jsx";
-import List from "../../components/empCRUD/list/list.jsx";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  TextField,
+  TablePagination,
+} from "@mui/material";
+import { employeesData } from "../../data"; // Corrected import
+import EmployeeView from "../../components/empCRUD/Empview/Empview";
+import AddEmployee from "../../components/empCRUD/Empadd/Empadd";
+import "./employee.css";
 
-function Employees() {
-  const [employees, setEmployees] = useState(employeesData);
+const Employees = () => {
+  const [data, setData] = useState(employeesData);
+  const [newSSN, setNewSSN] = useState("");
+  const [newName, setNewName] = useState("");
+  const [newPhoneNumber, setNewPhoneNumber] = useState("");
+  const [newAddress, setNewAddress] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [openView, setOpenView] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [isAdding, setIsAdding] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [openAddDialog, setOpenAddDialog] = useState(false); // State to control the visibility of the AddEmployee dialog
 
-  const handleEdit = (id) => {
-    const [employee] = employees.filter((employee) => employee.id === id);
-
-    setSelectedEmployee(employee);
-    setIsEditing(true);
+  const handleAddEmployee = (newEmployee) => {
+    setData([...data, newEmployee]);
   };
 
-  const handleDelete = (id) => {
-    Swal.fire({
-      icon: "warning",
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-    }).then((result) => {
-      if (result.value) {
-        const [employee] = employees.filter((employee) => employee.id === id);
+  const handleDeleteEmployee = (id) => {
+    setData(data.filter((employee) => employee.id !== id));
+  };
 
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: `${employee.firstName} ${employee.lastName}'s data has been deleted.`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
+  const handleViewEmployee = (employee) => {
+    setSelectedEmployee(employee);
+    setOpenView(true);
+  };
 
-        setEmployees(employees.filter((employee) => employee.id !== id));
-      }
-    });
+  const handleCloseView = () => {
+    setOpenView(false);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleSearch = () => {
+    const filteredData = employeesData.filter((employee) =>
+      employee.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setData(filteredData);
+  };
+
+  const handleCloseAddDialog = () => {
+    setOpenAddDialog(false);
   };
 
   return (
     <div className="employee-container">
-      {/* List */}
-      {!isAdding && !isEditing && (
-        <>
-          <Header setIsAdding={setIsAdding} />
-          <List
-            employees={employees}
-            handleEdit={handleEdit}
-            handleDelete={handleDelete}
-          />
-        </>
-      )}
+      <h1>EMPLOYEES MANAGEMENT</h1>
+      <div className="text-field-container">
+        <div className="flex flex-row gap-2 justify-between ">
+          <div className="m-5">
+            {" "}
+            <Button
+              className="m-2"
+              variant="contained"
+              color="primary"
+              onClick={() => setOpenAddDialog(true)}
+            >
+              Add Employee
+            </Button>
+          </div>
 
-      {/* ADD */}
-      {isAdding && (
-        <Add
-          employees={employees}
-          setEmployees={setEmployees}
-          setIsAdding={setIsAdding}
-        />
-      )}
+          <div>
+            {" "}
+            <TextField
+              className="text-field"
+              label="Search Employee Name"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleSearch}
+            />
+          </div>
+        </div>
+      </div>
 
-      {isEditing && (
-        <Edit
-          employees={employees}
-          selectedEmployees={selectedEmployee}
-          setEmployees={setEmployees}
-          setIsEditing={setIsEditing}
-        />
-      )}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell className="table-header">ID</TableCell>
+              <TableCell className="table-header">SSN</TableCell>
+              <TableCell className="table-header">Name</TableCell>
+              <TableCell className="table-header">Phone Number</TableCell>
+              <TableCell className="table-header">Address</TableCell>
+              <TableCell className="table-header">Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {(rowsPerPage > 0
+              ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : data
+            ).map((employee) => (
+              <TableRow key={employee.id}>
+                <TableCell className="table-cell">{employee.id}</TableCell>
+                <TableCell className="table-cell">{employee.ssn}</TableCell>
+                <TableCell className="table-cell">{employee.name}</TableCell>
+                <TableCell className="table-cell">
+                  {employee.phoneNumber}
+                </TableCell>
+                <TableCell className="table-cell">{employee.address}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleDeleteEmployee(employee.id)}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ marginLeft: 10 }}
+                    onClick={() => handleViewEmployee(employee)}
+                  >
+                    View
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <TablePagination
+        className="employee-pagination"
+        rowsPerPageOptions={[2, 4, 10, 15, { label: "All", value: -1 }]}
+        component="div"
+        count={data.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+
+      {/* Render the EmployeeView component */}
+      <EmployeeView
+        open={openView}
+        handleClose={handleCloseView}
+        selectedEmployee={selectedEmployee}
+      />
+
+      {/* Render the AddEmployee component */}
+      <AddEmployee
+        open={openAddDialog}
+        handleClose={handleCloseAddDialog}
+        handleAddEmployee={handleAddEmployee}
+      />
     </div>
   );
-}
+};
 
 export default Employees;

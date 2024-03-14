@@ -3,7 +3,7 @@ import { topDealUsers } from "../../data";
 
 const TopRightbox = () => {
   return (
-    <div className="topBox">
+    <div className="toprightBox">
       <h1>Top Least Employees</h1>
       <div className="list">
         {topDealUsers.map((user) => (
