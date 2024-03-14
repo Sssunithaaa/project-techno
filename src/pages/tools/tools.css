@@ -28,7 +28,7 @@
 .text-field {
   background-color: white;
   color: black;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 .text-field-container {
@@ -45,9 +45,10 @@
 
 .add-button {
   position: absolute; /* Set the position of the button to absolute */
-  top: 50px; /* Distance from the top */
-  right: 20px; /* Distance from the right */
-
+  top: 20px; /* Distance from the top */
+  right: 20px;
+  /* Distance from the right */
+  float: right;
   font-size: 0.875rem;
 }
 

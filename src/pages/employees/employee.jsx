@@ -71,28 +71,22 @@ const Employees = () => {
       <h1>EMPLOYEES MANAGEMENT</h1>
       <div className="text-field-container">
         <div className="flex flex-row gap-2 justify-between ">
-          <div className="m-5">
-            {" "}
-            <Button
-              className="m-2"
-              variant="contained"
-              color="primary"
-              onClick={() => setOpenAddDialog(true)}
-            >
-              Add Employee
-            </Button>
-          </div>
+          <Button
+            className="m-2"
+            variant="contained"
+            color="primary"
+            onClick={() => setOpenAddDialog(true)}
+          >
+            Add Employee
+          </Button>
 
-          <div>
-            {" "}
-            <TextField
-              className="text-field"
-              label="Search Employee Name"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleSearch}
-            />
-          </div>
+          <TextField
+            className="text-field"
+            label="Search Employee Name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleSearch}
+          />
         </div>
       </div>
 
