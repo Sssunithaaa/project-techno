@@ -24,7 +24,7 @@ const Tools = () => {
   const [newMaxLength, setNewMaxLength] = useState("");
   const [newCost, setNewCost] = useState("");
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(7);
   const [openView, setOpenView] = useState(false); // State to control the visibility of the ToolView dialog
   const [selectedTool, setSelectedTool] = useState(null); // State to store the selected tool
   const [searchTerm, setSearchTerm] = useState(""); // State to store the search term

@@ -34,7 +34,7 @@
   background-color: white;
 }
 
-.add-button {
+.m-2 {
   position: absolute; /* Set the position of the button to absolute */
   top: 30px; /* Distance from the top */
   right: 20px;

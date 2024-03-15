@@ -1,5 +1,7 @@
-// Jobs component
+// Jobs.jsx
+
 import React, { useState } from "react";
+
 import {
   Table,
   TableBody,
@@ -15,6 +17,7 @@ import {
 
 import { JobsData } from "../../data"; // Assuming you have a file containing job data
 import JobView from "../../components/JobsCRUD/JobsView/JobsView";
+import JobsAdd from "../../components/JobsCRUD/JobsAdd/JobsAdd";
 
 const Jobs = () => {
   const [data, setData] = useState(JobsData);
@@ -23,24 +26,14 @@ const Jobs = () => {
   const [newHolesCount, setNewHolesCount] = useState("");
   const [newToolCode, setNewToolCode] = useState("");
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(7);
   const [openView, setOpenView] = useState(false); // State to control the visibility of the JobView dialog
   const [selectedJob, setSelectedJob] = useState(null); // State to store the selected job
   const [searchTerm, setSearchTerm] = useState(""); // State to store the search term
 
   const handleAddJob = () => {
-    const newJob = {
-      Job_id: data.length + 1, // Assigning Job_id here
-      name: newJobName,
-      length: newJobLength,
-      holesCount: newHolesCount,
-      toolCode: newToolCode,
-    };
-    setData([...data, newJob]);
-    setNewJobName("");
-    setNewJobLength("");
-    setNewHolesCount("");
-    setNewToolCode("");
+    // Navigate to the JobsAdd component when clicking on "Add Job" button
+    window.location.href = "/JobsAdd";
   };
 
   const handleDeleteJob = (Job_id) => {

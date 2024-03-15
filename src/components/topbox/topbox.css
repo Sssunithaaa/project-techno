@@ -72,7 +72,7 @@
 
 .topBox {
   /* Set a fixed height for the container */
-  height: 400px; /* Adjust this value as needed */
+  height: 500px; /* Adjust this value as needed */
   overflow-y: hidden; /* Enable vertical scrolling */
 
   margin: 0; /* Reset margin */
