@@ -517,3 +517,40 @@ export const breakdownData = [
 
   // Add more breakdown data as needed
 ];
+export const JobsData = [
+  {
+    Job_id: 1,
+    name: "Job 1",
+    length: "10",
+    holesCount: "5",
+    toolCode: "TC001",
+  },
+  {
+    Job_id: 2,
+    name: "Job 2",
+    length: "15",
+    holesCount: "8",
+    toolCode: "TC002",
+  },
+  {
+    Job_id: 3,
+    name: "Job 3",
+    length: "20",
+    holesCount: "10",
+    toolCode: "TC003",
+  },
+  {
+    Job_id: 4,
+    name: "Job 4",
+    length: "12",
+    holesCount: "6",
+    toolCode: "TC004",
+  },
+  {
+    Job_id: 5,
+    name: "Job 5",
+    length: "18",
+    holesCount: "7",
+    toolCode: "TC005",
+  },
+];

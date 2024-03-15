@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 
 import { ToolsData } from "../../data";
-import ToolView from "../../components/toolsCRUD/ToolView";
+import ToolView from "../../components/toolsCRUD/ToolView/ToolView";
 import "./tools.css";
 
 const Tools = () => {
