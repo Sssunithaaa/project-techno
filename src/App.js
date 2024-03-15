@@ -9,7 +9,9 @@ import Menu from "./components/menu/menu";
 import React, { useState } from "react";
 import Login from "./pages/login/login.jsx";
 import Tools from "./pages/tools/tools.jsx";
-
+import Breakdown from "./pages/breakdown/breakdown.jsx";
+import Jobs from "./pages/jobs/jobs.jsx";
+import { breakdownData } from "./data.js";
 function App() {
   const [theme, setTheme] = useState("light");
 
@@ -48,8 +50,16 @@ function App() {
           element: <Machines />,
         },
         {
+          path: "/jobs",
+          element: <Jobs />,
+        },
+        {
           path: "/tools",
           element: <Tools />,
+        },
+        {
+          path: "/breakdown",
+          element: <Breakdown breakdownData={breakdownData} />,
         },
       ],
     },

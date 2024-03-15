@@ -147,42 +147,48 @@ export const MeanData = [
     cost: 234567,
   },
 ];
-
 export const LeftLineData = [
   {
-    label: "jun",
-    jobs: 3,
-    cost: 1378,
+    label: "Jan",
+    jobs: 40,
+    sales: 10,
+    revenue: 40,
   },
   {
-    label: "july",
-    jobs: 5,
-    cost: 3478,
+    label: "Feb",
+    jobs: 30,
+    sales: 10,
+    revenue: 20,
   },
   {
-    label: "aug",
-    jobs: 1,
-    cost: 2367,
+    label: "Mar",
+    jobs: 30,
+    sales: 10,
+    revenue: 30,
   },
   {
-    label: "sep",
+    label: "Apr",
+    jobs: 20,
+    sales: 30,
+    revenue: 70,
+  },
+  {
+    label: "May",
     jobs: 9,
-    cost: 23567,
+    sales: 7,
+    revenue: 10,
   },
   {
-    label: "octo",
-    jobs: 7,
-    cost: 2347,
+    label: "Jun",
+    jobs: 50,
+    sales: 60,
+    revenue: 80,
   },
   {
-    label: "nov",
-    jobs: 6,
-    cost: 23467,
-  },
-  {
-    label: "dec",
-    jobs: 0,
-    cost: 2367,
+    label: "Jul",
+    jobs: 80,
+    sales: 10,
+    revenue: 110,
   },
 ];
 

@@ -41,9 +41,8 @@ const chart1_2_options = {
     backgroundColor: "grey",
   },
   animation: {
-    // Adjust the duration and easing for smoother animations
-    duration: 20000, // Duration of the animation in milliseconds
-    easing: "easeInOutQuart", // Easing function for the animation
+    duration: 20000,
+    easing: "easeInOutQuart",
   },
   datasets: {
     line: {
@@ -72,7 +71,7 @@ const LeftChart = () => {
           {
             label: "Jobs",
             fill: true,
-            backgroundColor: "rgba(29,140,248,0)",
+            backgroundColor: "rgba(29,140,248,0.2)", // Add gradient effect here
             borderColor: "#283739",
             borderWidth: 2,
             borderDash: [],
@@ -85,6 +84,40 @@ const LeftChart = () => {
             pointHoverBorderWidth: 15,
             pointRadius: 4,
             data: LeftLineData.map((item) => item.jobs),
+          },
+          {
+            label: "Sales",
+            fill: true,
+            backgroundColor: "rgba(255, 99, 132, 0.2)", // Add gradient effect here
+            borderColor: "#ff6384",
+            borderWidth: 2,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: "#ff6384",
+            pointBorderColor: "rgba(255,255,255,0)",
+            pointHoverBackgroundColor: "#ff6384",
+            pointBorderWidth: 20,
+            pointHoverRadius: 4,
+            pointHoverBorderWidth: 15,
+            pointRadius: 4,
+            data: LeftLineData.map((item) => item.sales),
+          },
+          {
+            label: "Expenses",
+            fill: true,
+            backgroundColor: "rgba(255, 205, 86, 0.2)", // Add gradient effect here
+            borderColor: "#e6b800",
+            borderWidth: 2,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: "#e6b800",
+            pointBorderColor: "rgba(255,255,255,0)",
+            pointHoverBackgroundColor: "#e6b800",
+            pointBorderWidth: 20,
+            pointHoverRadius: 4,
+            pointHoverBorderWidth: 15,
+            pointRadius: 4,
+            data: LeftLineData.map((item) => item.revenue),
           },
         ],
       },
