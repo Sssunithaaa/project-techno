@@ -12,10 +12,12 @@ import {
 } from "@mui/material";
 import { breakdownData } from "../../data";
 import "./breakdown.css";
+import AddBreakdown from "./Addbreakdown";
 
 const Breakdown = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [openAddBreakdown, setOpenAddBreakdown] = useState(false); // State to control the visibility of AddBreakdown
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -30,11 +32,33 @@ const Breakdown = () => {
     window.print();
   };
 
+  const handleOpenAddBreakdown = () => {
+    setOpenAddBreakdown(true);
+  };
+
+  const handleCloseAddBreakdown = () => {
+    setOpenAddBreakdown(false);
+  };
+
+  const handleAddBreakdown = (newBreakdown) => {
+    // Logic to add the breakdown data
+    console.log("Adding breakdown:", newBreakdown);
+  };
+
   return (
     <div className="breakdown-container">
       <h1>Breakdown Management</h1>
       <Button variant="contained" color="primary" onClick={handlePrint}>
         Print
+      </Button>
+      {/* Add "Add" button */}
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleOpenAddBreakdown}
+        className="b-2"
+      >
+        Add
       </Button>
       <TableContainer component={Paper}>
         <Table className="enlarged-table">
@@ -89,6 +113,12 @@ const Breakdown = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      {/* AddBreakdown component */}
+      <AddBreakdown
+        open={openAddBreakdown}
+        handleClose={handleCloseAddBreakdown}
+        handleAddBreakdown={handleAddBreakdown}
       />
     </div>
   );

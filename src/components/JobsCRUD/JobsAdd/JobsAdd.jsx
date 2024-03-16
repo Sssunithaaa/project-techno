@@ -1,96 +1,149 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  Grid,
+} from "@mui/material";
 
-const JobsAdd = () => {
+const AddJob = ({ open, handleClose, handleAddJob }) => {
+  const [jobId, setJobId] = useState("");
   const [jobName, setJobName] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
-  const [length, setLength] = useState("");
-  const [holesCount, setHolesCount] = useState("");
-  const [options, setOptions] = useState([]); // State for options
+  const [tools, setTools] = useState([{ tool: "", length: "", holes: "" }]);
 
-  useEffect(() => {
-    // Simulating fetching options from backend or using rough data
-    const fetchOptions = async () => {
-      // Rough options data
-      const roughOptions = ["Option 1", "Option 2", "Option 3"];
-      setOptions(roughOptions);
-    };
-
-    fetchOptions();
-  }, []); // Fetch options only once on component mount
-
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
+  const handleAdd = () => {
+    // Validate if all required fields are filled
+    if (
+      jobId &&
+      jobName &&
+      tools.every((tool) => tool.tool && tool.length && tool.holes)
+    ) {
+      const newJob = {
+        jobId,
+        jobName,
+        tools,
+      };
+      handleAddJob(newJob);
+      // Reset fields after adding
+      setJobId("");
+      setJobName("");
+      setTools([{ tool: "", length: "", holes: "" }]);
+      handleClose();
+    } else {
+      // Handle validation error, show error message or prevent submission
+      alert("Please fill in all fields");
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Perform job addition logic here
-    console.log("Submitted:", { jobName, selectedOption, length, holesCount });
-    // Reset form fields after submission
-    setJobName("");
-    setSelectedOption("");
-    setLength("");
-    setHolesCount("");
+  const handleToolChange = (index, event) => {
+    const newTools = [...tools];
+    newTools[index][event.target.name] = event.target.value;
+    setTools(newTools);
+  };
+
+  const addTool = () => {
+    setTools([...tools, { tool: "", length: "", holes: "" }]);
+  };
+
+  const removeTool = (index) => {
+    const newTools = [...tools];
+    newTools.splice(index, 1);
+    setTools(newTools);
   };
 
   return (
-    <div>
-      <h2>Add New Job</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="jobName">Job Name:</label>
-          <input
-            type="text"
-            id="jobName"
-            value={jobName}
-            onChange={(e) => setJobName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="option">Select an Option:</label>
-          <select
-            id="option"
-            value={selectedOption}
-            onChange={handleOptionChange}
-            required
-          >
-            <option value="">Select</option>
-            {options.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-        {selectedOption && (
-          <>
-            <div>
-              <label htmlFor="length">Length:</label>
-              <input
-                type="number"
-                id="length"
-                value={length}
-                onChange={(e) => setLength(e.target.value)}
-                required
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+      <DialogTitle>Add New Job</DialogTitle>
+      <DialogContent>
+        <TextField
+          label="Job ID"
+          value={jobId}
+          onChange={(e) => setJobId(e.target.value)}
+          variant="outlined"
+          fullWidth
+          size="large"
+          margin="normal"
+        />
+        <TextField
+          label="Job Name"
+          value={jobName}
+          onChange={(e) => setJobName(e.target.value)}
+          variant="outlined"
+          fullWidth
+          size="large"
+          margin="normal"
+        />
+        {tools.map((tool, index) => (
+          <Grid container spacing={2} key={index}>
+            <Grid item xs={4}>
+              <FormControl fullWidth margin="normal">
+                <InputLabel>select tool</InputLabel>
+                <Select
+                  value={tool.tool}
+                  onChange={(e) => handleToolChange(index, e)}
+                  name="tool"
+                  variant="outlined"
+                >
+                  <MenuItem value="Hammer">Hammer</MenuItem>
+                  <MenuItem value="Screwdriver">Screwdriver</MenuItem>
+                  {/* Add more MenuItem components for additional tools */}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                label={`Length of the ${tool.tool}`}
+                value={tool.length}
+                onChange={(e) => handleToolChange(index, e)}
+                name="length"
+                variant="outlined"
+                fullWidth
+                size="large"
+                margin="normal"
               />
-            </div>
-            <div>
-              <label htmlFor="holesCount">Number of Holes:</label>
-              <input
-                type="number"
-                id="holesCount"
-                value={holesCount}
-                onChange={(e) => setHolesCount(e.target.value)}
-                required
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                label={`Number of Holes for the ${tool.tool}`}
+                value={tool.holes}
+                onChange={(e) => handleToolChange(index, e)}
+                name="holes"
+                variant="outlined"
+                fullWidth
+                size="large"
+                margin="normal"
               />
-            </div>
-          </>
-        )}
-        <button type="submit">Add Job</button>
-      </form>
-    </div>
+            </Grid>
+            <Grid item xs={1}>
+              <Button
+                onClick={() => removeTool(index)}
+                color="primary"
+                top="50px"
+              >
+                Remove
+              </Button>
+            </Grid>
+          </Grid>
+        ))}
+        <Button onClick={addTool}>Add Tool</Button>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="secondary">
+          Cancel
+        </Button>
+        <Button onClick={handleAdd} color="primary">
+          Add
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
-export default JobsAdd;
+export default AddJob;

@@ -1,52 +1,45 @@
-// Jobs.jsx
-
 import React, { useState } from "react";
-
 import {
-  Table,
-  TableBody,
-  TableCell,
+  Button,
   TableContainer,
+  Table,
   TableHead,
   TableRow,
+  TableCell,
+  TableBody,
   Paper,
-  Button,
-  TextField,
   TablePagination,
+  TextField,
 } from "@mui/material";
-
-import { JobsData } from "../../data"; // Assuming you have a file containing job data
 import JobView from "../../components/JobsCRUD/JobsView/JobsView";
-import JobsAdd from "../../components/JobsCRUD/JobsAdd/JobsAdd";
+import { JobsData } from "../../data";
+import AddJob from "../../components/JobsCRUD/JobsAdd/JobsAdd";
 
 const Jobs = () => {
   const [data, setData] = useState(JobsData);
-  const [newJobName, setNewJobName] = useState("");
-  const [newJobLength, setNewJobLength] = useState("");
-  const [newHolesCount, setNewHolesCount] = useState("");
-  const [newToolCode, setNewToolCode] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(7);
-  const [openView, setOpenView] = useState(false); // State to control the visibility of the JobView dialog
-  const [selectedJob, setSelectedJob] = useState(null); // State to store the selected job
-  const [searchTerm, setSearchTerm] = useState(""); // State to store the search term
+  const [openView, setOpenView] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [openAddDialog, setOpenAddDialog] = useState(false); // State to control the visibility of the Add Job dialog
 
-  const handleAddJob = () => {
-    // Navigate to the JobsAdd component when clicking on "Add Job" button
-    window.location.href = "/JobsAdd";
+  const handleAddJob = (newJob) => {
+    setData([...data, newJob]);
+    setOpenAddDialog(false); // Close the Add Job dialog after adding a job
   };
 
-  const handleDeleteJob = (Job_id) => {
-    setData(data.filter((job) => job.Job_id !== Job_id));
+  const handleDeleteJob = (jobId) => {
+    setData(data.filter((job) => job.id !== jobId));
   };
 
   const handleViewJob = (job) => {
-    setSelectedJob(job); // Set the selected job
-    setOpenView(true); // Open the JobView dialog
+    setSelectedJob(job);
+    setOpenView(true);
   };
 
   const handleCloseView = () => {
-    setOpenView(false); // Close the JobView dialog
+    setOpenView(false);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -59,10 +52,16 @@ const Jobs = () => {
   };
 
   const handleSearch = () => {
-    const filteredData = JobsData.filter((job) =>
-      job.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setData(filteredData);
+    // Logic to filter data based on search term
+    console.log("Searching for:", searchTerm);
+  };
+
+  const handleOpenAddDialog = () => {
+    setOpenAddDialog(true);
+  };
+
+  const handleCloseAddDialog = () => {
+    setOpenAddDialog(false);
   };
 
   return (
@@ -73,7 +72,7 @@ const Jobs = () => {
           className="add-button"
           variant="contained"
           color="primary"
-          onClick={handleAddJob}
+          onClick={handleOpenAddDialog} // Open the Add Job dialog when clicking the button
         >
           Add Job
         </Button>
@@ -90,8 +89,7 @@ const Jobs = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className="table-header">Job ID</TableCell>{" "}
-              {/* Displaying Job ID */}
+              <TableCell className="table-header">Job ID</TableCell>
               <TableCell className="table-header">Job Name</TableCell>
               <TableCell className="table-header">Job Length</TableCell>
               <TableCell className="table-header">No. of Holes</TableCell>
@@ -100,36 +98,34 @@ const Jobs = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(rowsPerPage > 0
-              ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : data
-            ).map((row) => (
-              <TableRow key={row.Job_id}>
-                <TableCell className="table-cell">{row.Job_id}</TableCell>{" "}
-                {/* Displaying Job ID */}
-                <TableCell className="table-cell">{row.name}</TableCell>
-                <TableCell className="table-cell">{row.length}</TableCell>
-                <TableCell className="table-cell">{row.holesCount}</TableCell>
-                <TableCell className="table-cell">{row.toolCode}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleDeleteJob(row.Job_id)}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ marginLeft: 10 }}
-                    onClick={() => handleViewJob(row)} // Pass the current row to handleViewJob
-                  >
-                    View
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {data
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell className="table-cell">{row.id}</TableCell>
+                  <TableCell className="table-cell">{row.name}</TableCell>
+                  <TableCell className="table-cell">{row.length}</TableCell>
+                  <TableCell className="table-cell">{row.holesCount}</TableCell>
+                  <TableCell className="table-cell">{row.toolCode}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleDeleteJob(row.id)}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{ marginLeft: 10 }}
+                      onClick={() => handleViewJob(row)}
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -145,11 +141,17 @@ const Jobs = () => {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
 
-      {/* Render the JobView component */}
       <JobView
         open={openView}
         handleClose={handleCloseView}
         selectedJob={selectedJob}
+      />
+
+      {/* Render the AddJob component */}
+      <AddJob
+        open={openAddDialog}
+        handleClose={handleCloseAddDialog}
+        handleAddJob={handleAddJob}
       />
     </div>
   );

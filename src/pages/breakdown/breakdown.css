@@ -33,3 +33,6 @@
 .breakdown-table td:not(:last-child) {
   margin-right: 10px;
 }
+.b-2 {
+  float: right;
+}
