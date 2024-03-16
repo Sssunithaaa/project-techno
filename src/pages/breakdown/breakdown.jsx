@@ -9,6 +9,7 @@ import {
   Paper,
   TablePagination,
   Button,
+  Slide,
 } from "@mui/material";
 import { breakdownData } from "../../data";
 import "./breakdown.css";
@@ -51,15 +52,17 @@ const Breakdown = () => {
       <Button variant="contained" color="primary" onClick={handlePrint}>
         Print
       </Button>
-      {/* Add "Add" button */}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleOpenAddBreakdown}
-        className="b-2"
-      >
-        Add
-      </Button>
+      {/* Add "Add" button with animation */}
+      <Slide direction="up" in={!openAddBreakdown}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOpenAddBreakdown}
+          className="b-2"
+        >
+          Add
+        </Button>
+      </Slide>
       <TableContainer component={Paper}>
         <Table className="enlarged-table">
           <TableHead>

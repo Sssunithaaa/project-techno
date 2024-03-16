@@ -127,7 +127,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
                 color="primary"
                 top="50px"
               >
-                Remove
+                X
               </Button>
             </Grid>
           </Grid>
