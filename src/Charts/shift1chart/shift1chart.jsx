@@ -1,51 +1,85 @@
 import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { shift1Data } from "../chart.js";
+import { shift1Data } from "../chart";
+import GaugeChart from "react-gauge-chart";
 import "chartjs-plugin-datalabels";
+import { Link } from "react-router-dom";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function Shift1Chart() {
+function Shift1Chart({ selectedDay, OnDayChangeShift1 }) {
   const [meanCost, setMeanCost] = useState(null);
+  const [selectedDayData, setSelectedDayData] = useState([]);
+  const [data, setData] = useState(null);
+  const [angle, setAngle] = useState(null);
+
+  // Define colorRange outside of the useEffect hook
+  const colorRange = [
+    "#C8E6C9",
+    "#A5D6A7",
+    "#81C784",
+    "#66BB6A",
+    "#4CAF50",
+    "#43A047",
+    "#388E3C",
+    "#2E7D32",
+    "#1B5E20",
+  ];
 
   useEffect(() => {
-    // Calculate total cost and mean cost
-    const totalCost = shift1Data.reduce(
-      (acc, dataPoint) => acc + dataPoint.cost,
-      0
-    );
-    const mean = totalCost / shift1Data.length;
-    setMeanCost(mean.toFixed(2));
-  }, []);
+    setSelectedDayData(OnDayChangeShift1);
 
-  // Extract jobs data directly from shift1Data
-  const dataValues = shift1Data.map((dataPoint) => dataPoint.jobs);
+    if (selectedDay) {
+      const efficiencyByShift = {};
+      selectedDayData.forEach((dataPoint) => {
+        if (!efficiencyByShift[dataPoint.id]) {
+          efficiencyByShift[dataPoint.id] = {
+            totalTargetedJobs: 0,
+            totalJobs: 0,
+          };
+        }
+        efficiencyByShift[dataPoint.id].totalTargetedJobs +=
+          dataPoint.targetedJobs;
+        efficiencyByShift[dataPoint.id].totalJobs += dataPoint.jobs;
+      });
 
-  const totalJobs = dataValues.reduce((acc, curr) => acc + curr, 0); // Calculate the total number of jobs
+      // Calculate shiftIds here
+      const shiftIds = Object.keys(efficiencyByShift).map(
+        (shift, index) => shift - "${index + 1}"
+      );
 
-  // Create a gradient fill
-  const gradient = document.createElement("canvas").getContext("2d");
-  const gradientFill = gradient.createLinearGradient(0, 0, 0, 200);
-  gradientFill.addColorStop(0, "#668ba4");
-  gradientFill.addColorStop(1, "#dde0ab");
+      const percentages = Object.values(efficiencyByShift).map((shift) => {
+        return (shift.totalJobs / shift.totalTargetedJobs) * 100;
+      });
 
-  // Calculate the angle for the speedometer line
-  const angle = (meanCost / totalJobs) * Math.PI;
+      const shiftColors = percentages.map(
+        (_, index) => colorRange[index % colorRange.length]
+      );
 
-  const data = {
-    datasets: [
-      {
-        label: "Shop 1",
-        data: dataValues,
-        backgroundColor: gradientFill, // Use the gradient fill
-        borderColor: ["#668ba4", "#dde0ab"],
-        borderWidth: 1, // Add border width for better visibility
-        circumference: 180,
-        rotation: 270,
-      },
-    ],
-  };
+      const averagePercentage =
+        percentages.reduce((acc, curr) => acc + curr, 0) / percentages.length;
+      const angle = (averagePercentage / 100) * Math.PI;
+
+      setData({
+        datasets: [
+          {
+            label: "Shop 1 - ${selectedDay}",
+            data: percentages,
+            backgroundColor: shiftColors,
+            borderColor: ["#668ba4", "#dde0ab"],
+            borderWidth: 1,
+            circumference: 180,
+            rotation: 270,
+            ids: shiftIds,
+          },
+        ],
+        labels: shiftIds,
+      });
+
+      setAngle(angle);
+    }
+  }, [selectedDay, OnDayChangeShift1]);
 
   const options = {
     responsive: true,
@@ -55,8 +89,7 @@ function Shift1Chart() {
         display: true,
         color: "white",
         formatter: (value) => {
-          const percentage = ((value * 100) / totalJobs).toFixed(2);
-          return percentage + "%";
+          return value.toFixed(2) + "%"; // Display efficiency with two decimal places
         },
         font: {
           size: "16",
@@ -115,14 +148,44 @@ function Shift1Chart() {
   };
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <Doughnut
-        data={data}
-        options={options}
-        plugins={[pluginOption]}
-      ></Doughnut>
-    </div>
+    <Link to="/chart">
+      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+        <div style={{ width: "100%", display: "inline-block" }}>
+          <GaugeChart
+            id="gauge-chart"
+            nrOfLevels={30}
+            colors={["#00FA9A", "#00BFFF", "#FFD700"]}
+            arcWidth={0.3}
+            percent={angle / Math.PI} // Convert angle to a 0-1 scale
+            textColor={"#FFFFFF"}
+            needleColor="#ffffff"
+            needleBaseColor="#ffffff"
+            hideText
+          />
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            width: "100%",
+            textAlign: "center",
+            bottom: "-5px", // Adjust the distance from the bottom of the gauge
+            color: "#FFFFFF", // Text color
+            fontSize: "18px", // Adjust text size as needed
+          }}
+        >
+          {((angle / Math.PI) * 100).toFixed(2)}%
+        </div>
+      </div>
+    </Link>
   );
 }
+
+export const fetchShiftsForDay1 = (day) => {
+  let dataForSelectedDay = shift1Data;
+  if (day !== "All Days") {
+    dataForSelectedDay = shift1Data.filter((shift) => shift.day === day);
+  }
+  return dataForSelectedDay;
+};
 
 export default Shift1Chart;

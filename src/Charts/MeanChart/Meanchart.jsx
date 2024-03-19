@@ -1,84 +1,76 @@
-// Shift1Chart.jsx
-import React from "react";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { MeanData } from "../chart.js";
+// MeanChart.jsx
+import React, { useEffect, useState } from "react";
+import GaugeChart from "react-gauge-chart";
+import { Link } from "react-router-dom";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+function MeanChart({
+  OnDayChangeShift1,
+  OnDayChangeShift2,
+  OnDayChangeShift3,
+}) {
+  const [averagePercentage, setAveragePercentage] = useState(null);
 
-function MeanChart() {
-  // Extract jobs data directly from shift1Data
-  const dataValues = MeanData.map((dataPoint) => dataPoint.jobs);
+  useEffect(() => {
+    const calculateMeanPercentage = (shiftData) => {
+      if (!shiftData || shiftData.length === 0) return null;
 
-  const totalJobs = dataValues.reduce((acc, curr) => acc + curr, 0); // Calculate the total number of jobs
+      let totalJobs = 0;
+      let totalTargetedJobs = 0;
 
-  const data = {
-    datasets: [
-      {
-        label: "Shop 1",
-        data: dataValues,
-        backgroundColor: ["#d3d6db", "#3a4750"],
-        borderColor: ["#d3d6db", "#3a4750"],
-        circumference: 180,
-        rotation: 270,
-      },
-    ],
-  };
+      shiftData.forEach((curr) => {
+        totalJobs += curr.jobs;
+        totalTargetedJobs += curr.targetedJobs;
+      });
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      datalabels: {
-        display: false, // Turn off the default labels
-        formatter: (value) => {
-          // Display the overall percentage in the middle
-          const percentage = ((value * 100) / totalJobs).toFixed(2);
-          return percentage + "%";
-        },
-        font: {
-          size: "30", // Font size of the percentage text
-        },
-      },
-    },
-  };
+      if (totalTargetedJobs === 0) {
+        console.log("Skipping division by zero");
+        return null; // Avoid division by zero
+      }
 
-  const pluginOption = {
-    id: "plugin-option",
-    beforeDatasetsDraw: function (chart, args, pluginOptions) {
-      const { ctx, data } = chart;
+      return (totalJobs / totalTargetedJobs) * 100;
+    };
 
-      ctx.save();
-      ctx.font = "24px Arial"; // Increased font size to 24px
-      ctx.fillStyle = "white";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
+    const mean1 = calculateMeanPercentage(OnDayChangeShift1);
+    const mean2 = calculateMeanPercentage(OnDayChangeShift2);
+    const mean3 = calculateMeanPercentage(OnDayChangeShift3);
 
-      const x = chart.getDatasetMeta(0).data[0].x;
-      const y = chart.getDatasetMeta(0).data[0].y;
+    const overallMean = (mean1 + mean2 + mean3) / 3;
+    setAveragePercentage(overallMean);
+  }, [OnDayChangeShift1, OnDayChangeShift2, OnDayChangeShift3]);
 
-      // Measure text height and divide by 2 to properly position the text
-      const textHeight = ctx.measureText("text").actualBoundingBoxAscent;
-      const yOffset = textHeight / 2;
-
-      // Adjust Y position to center text vertically
-      const adjustedY = y - yOffset;
-
-      ctx.fillText("MEAN", x, adjustedY);
-
-      ctx.restore();
-    },
-  };
-
-  return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <Doughnut
-        data={data}
-        options={options}
-        plugins={[pluginOption]}
-      ></Doughnut>
-    </div>
-  );
+  return averagePercentage !== null ? (
+    <Link to="/chart">
+      {" "}
+      {/* Wrap GaugeChart with Link component */}
+      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+        <div style={{ width: "100%", display: "inline-block" }}>
+          <GaugeChart
+            id="gauge-chart-mean"
+            nrOfLevels={30}
+            colors={["#9370DB", "#8A2BE2", "#6A5ACD", "#8B008B"]}
+            arcWidth={0.3}
+            percent={averagePercentage / 100} // Convert percentage to a 0-1 scale for the gauge
+            textColor={"#FFFFFF"}
+            needleColor="#ffffff"
+            needleBaseColor="#ffffff"
+            hideText
+          />
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            width: "100%",
+            textAlign: "center",
+            bottom: "-5px", // Adjust the distance from the bottom of the gauge
+            color: "#FFFFFF", // Text color
+            fontSize: "18px", // Adjust text size as needed
+          }}
+        >
+          {averagePercentage.toFixed(2)}%
+        </div>
+      </div>
+    </Link>
+  ) : null;
 }
 
 export default MeanChart;

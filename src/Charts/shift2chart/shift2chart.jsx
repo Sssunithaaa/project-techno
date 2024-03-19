@@ -1,45 +1,121 @@
-// Shift1Chart.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { shift2Data } from "../chart.js";
+import { shift2Data } from "../chart";
+import GaugeChart from "react-gauge-chart";
 import "chartjs-plugin-datalabels";
+import { Link } from "react-router-dom";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function Shift2Chart() {
-  // Extract jobs data directly from shift1Data
-  const dataValues = shift2Data.map((dataPoint) => dataPoint.jobs);
+function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
+  const [meanCost, setMeanCost] = useState(null);
+  const [selectedDayData, setSelectedDayData] = useState([]);
+  const [data, setData] = useState(null);
+  const [angle, setAngle] = useState(null);
 
-  const totalJobs = dataValues.reduce((acc, curr) => acc + curr, 0); // Calculate the total number of jobs
+  // Define colorRange outside of the useEffect hook
+  const colorRange = [
+    "#C8E6C9",
+    "#A5D6A7",
+    "#81C784",
+    "#66BB6A",
+    "#4CAF50",
+    "#43A047",
+    "#388E3C",
+    "#2E7D32",
+    "#1B5E20",
+  ];
 
-  const data = {
-    datasets: [
-      {
-        label: "Shop 1",
-        data: dataValues,
-        backgroundColor: ["#3CB371", "#66CDAA"],
-        borderColor: ["#3CB371", "#66CDAA"],
-        circumference: 180,
-        rotation: 270,
-      },
-    ],
-  };
+  useEffect(() => {
+    setSelectedDayData(OnDayChangeShift2);
+
+    if (selectedDay) {
+      const efficiencyByShift = {};
+      selectedDayData.forEach((dataPoint) => {
+        if (!efficiencyByShift[dataPoint.id]) {
+          efficiencyByShift[dataPoint.id] = {
+            totalTargetedJobs: 0,
+            totalJobs: 0,
+          };
+        }
+        efficiencyByShift[dataPoint.id].totalTargetedJobs +=
+          dataPoint.targetedJobs;
+        efficiencyByShift[dataPoint.id].totalJobs += dataPoint.jobs;
+      });
+
+      // Calculate shiftIds here
+      const shiftIds = Object.keys(efficiencyByShift).map(
+        (shift, index) => shift - "${index + 1}"
+      );
+
+      const percentages = Object.values(efficiencyByShift).map((shift) => {
+        return (shift.totalJobs / shift.totalTargetedJobs) * 100;
+      });
+
+      const shiftColors = percentages.map(
+        (_, index) => colorRange[index % colorRange.length]
+      );
+
+      const averagePercentage =
+        percentages.reduce((acc, curr) => acc + curr, 0) / percentages.length;
+      const angle = (averagePercentage / 100) * Math.PI;
+
+      setData({
+        datasets: [
+          {
+            label: "Shop 1 - ${selectedDay}",
+            data: percentages,
+            backgroundColor: shiftColors,
+            borderColor: ["#668ba4", "#dde0ab"],
+            borderWidth: 1,
+            circumference: 180,
+            rotation: 270,
+            ids: shiftIds,
+          },
+        ],
+        labels: shiftIds,
+      });
+
+      setAngle(angle);
+    }
+  }, [selectedDay, OnDayChangeShift2]);
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       datalabels: {
-        display: false, // Turn off the default labels
+        display: true,
+        color: "white",
         formatter: (value) => {
-          // Display the overall percentage in the middle
-          const percentage = ((value * 100) / totalJobs).toFixed(2);
-          return percentage + "%";
+          return value.toFixed(2) + "%"; // Display efficiency with two decimal places
         },
         font: {
-          size: "30", // Font size of the percentage text
+          size: "16",
         },
+      },
+      annotation: {
+        annotations: [
+          {
+            type: "line",
+            mode: "horizontal",
+            scaleID: "y-axis-0",
+            borderColor: "red",
+            borderWidth: 2,
+            value: angle,
+          },
+          {
+            type: "text",
+            fontFamily: "Arial",
+            fontColor: "white",
+            fontStyle: "bold",
+            fontSize: 16,
+            text: "12",
+            x: "50%",
+            y: "50%",
+          },
+        ],
       },
     },
   };
@@ -72,14 +148,50 @@ function Shift2Chart() {
   };
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <Doughnut
-        data={data}
-        options={options}
-        plugins={[pluginOption]}
-      ></Doughnut>
-    </div>
+    <Link to="/chart">
+      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+        <div style={{ width: "100%", display: "inline-block" }}>
+          <GaugeChart
+            id="gauge-chart"
+            nrOfLevels={30}
+            colors={[
+              "#FFCDD2", // Light red
+              "#EF9A9A", // Medium light red
+              "#E57373", // Medium red
+              "#EF5350", // Medium dark red
+              "#F44336", // Dark red
+            ]}
+            arcWidth={0.3}
+            percent={angle / Math.PI} // Convert angle to a 0-1 scale
+            textColor={"#FFFFFF"}
+            needleColor="#ffffff"
+            needleBaseColor="#ffffff"
+            hideText
+          />
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            width: "100%",
+            textAlign: "center",
+            bottom: "-5px", // Adjust the distance from the bottom of the gauge
+            color: "#FFFFFF", // Text color
+            fontSize: "18px", // Adjust text size as needed
+          }}
+        >
+          {((angle / Math.PI) * 100).toFixed(2)}%
+        </div>
+      </div>
+    </Link>
   );
 }
+
+export const fetchShiftsForDay2 = (day) => {
+  let dataForSelectedDay = shift2Data;
+  if (day !== "All Days") {
+    dataForSelectedDay = shift2Data.filter((shift) => shift.day === day);
+  }
+  return dataForSelectedDay;
+};
 
 export default Shift2Chart;

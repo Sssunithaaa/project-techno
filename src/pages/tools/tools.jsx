@@ -1,3 +1,5 @@
+// Tools.js
+
 import React, { useState } from "react";
 import {
   Table,
@@ -14,6 +16,7 @@ import {
 
 import { ToolsData } from "../../data";
 import ToolView from "../../components/toolsCRUD/ToolView/ToolView";
+import AddTool from "../../components/toolsCRUD/toolAdd/Tooladd";
 import "./tools.css";
 
 const Tools = () => {
@@ -25,25 +28,18 @@ const Tools = () => {
   const [newCost, setNewCost] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(7);
-  const [openView, setOpenView] = useState(false); // State to control the visibility of the ToolView dialog
-  const [selectedTool, setSelectedTool] = useState(null); // State to store the selected tool
-  const [searchTerm, setSearchTerm] = useState(""); // State to store the search term
+  const [openView, setOpenView] = useState(false);
+  const [selectedTool, setSelectedTool] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [openAddDialog, setOpenAddDialog] = useState(false);
 
-  const handleAddItem = () => {
-    const newTool = {
-      id: data.length + 1,
-      name: newToolName,
-      code: newToolCode,
-      quantity: newQuantity,
-      maxLength: newMaxLength,
-      cost: newCost,
-    };
+  const handleOpenAddDialog = () => {
+    setOpenAddDialog(true);
+  };
+
+  const handleAddTool = (newTool) => {
     setData([...data, newTool]);
-    setNewToolName("");
-    setNewToolCode("");
-    setNewQuantity("");
-    setNewMaxLength("");
-    setNewCost("");
+    setOpenAddDialog(false); // Close the AddTool dialog after adding a tool
   };
 
   const handleDeleteItem = (id) => {
@@ -51,12 +47,12 @@ const Tools = () => {
   };
 
   const handleViewTool = (tool) => {
-    setSelectedTool(tool); // Set the selected tool
-    setOpenView(true); // Open the ToolView dialog
+    setSelectedTool(tool);
+    setOpenView(true);
   };
 
   const handleCloseView = () => {
-    setOpenView(false); // Close the ToolView dialog
+    setOpenView(false);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -83,7 +79,7 @@ const Tools = () => {
           className="add-button"
           variant="contained"
           color="primary"
-          onClick={handleAddItem}
+          onClick={handleOpenAddDialog}
         >
           Add Item
         </Button>
@@ -110,36 +106,35 @@ const Tools = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(rowsPerPage > 0
-              ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : data
-            ).map((row) => (
-              <TableRow key={row.id}>
-                <TableCell className="table-cell">{row.id}</TableCell>
-                <TableCell className="table-cell">{row.name}</TableCell>
-                <TableCell className="table-cell">{row.code}</TableCell>
-                <TableCell className="table-cell">{row.quantity}</TableCell>
-                <TableCell className="table-cell">{row.maxLength}</TableCell>
-                <TableCell className="table-cell">{row.cost}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleDeleteItem(row.id)}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ marginLeft: 10 }}
-                    onClick={() => handleViewTool(row)} // Pass the current row to handleViewTool
-                  >
-                    View
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {data
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell className="table-cell">{row.id}</TableCell>
+                  <TableCell className="table-cell">{row.name}</TableCell>
+                  <TableCell className="table-cell">{row.code}</TableCell>
+                  <TableCell className="table-cell">{row.quantity}</TableCell>
+                  <TableCell className="table-cell">{row.maxLength}</TableCell>
+                  <TableCell className="table-cell">{row.cost}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleDeleteItem(row.id)}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{ marginLeft: 10 }}
+                      onClick={() => handleViewTool(row)}
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -160,6 +155,13 @@ const Tools = () => {
         open={openView}
         handleClose={handleCloseView}
         selectedTool={selectedTool}
+      />
+
+      {/* Render the AddTool component */}
+      <AddTool
+        open={openAddDialog}
+        handleClose={() => setOpenAddDialog(false)}
+        handleAddTool={handleAddTool}
       />
     </div>
   );

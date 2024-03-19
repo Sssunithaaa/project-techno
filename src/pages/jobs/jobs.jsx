@@ -72,6 +72,7 @@ const Jobs = () => {
           className="add-button"
           variant="contained"
           color="primary"
+          top="20px"
           onClick={handleOpenAddDialog} // Open the Add Job dialog when clicking the button
         >
           Add Job

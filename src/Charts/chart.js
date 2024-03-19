@@ -38,115 +38,238 @@ export const bigLineData = [
 
 export const shift1Data = [
   {
+    id: "001",
+    day: "Monday",
     jobs: 11,
-    cost: 12,
+    targetedJobs: 12,
   },
   {
+    id: "002",
+    day: "Tuesday",
     jobs: 15,
-    cost: 32,
+    targetedJobs: 32,
   },
   {
+    id: "003",
+    day: "Wednesday",
     jobs: 19,
-    cost: 21,
+    targetedJobs: 21,
   },
   {
+    id: "004",
+    day: "Thursday",
     jobs: 12,
-    cost: 34,
+    targetedJobs: 34,
   },
   {
+    id: "005",
+    day: "Friday",
     jobs: 16,
-    cost: 21,
+    targetedJobs: 21,
   },
   {
+    id: "006",
+    day: "Saturday",
     jobs: 24,
-    cost: 234567,
+    targetedJobs: 25,
   },
   {
+    id: "007",
+    day: "Sunday",
     jobs: 29,
-    cost: 27,
+    targetedJobs: 29,
   },
+  // Add more data points as needed
 ];
 
 export const shift2Data = [
   {
+    id: "001",
+    day: "Monday",
     jobs: 10,
-    cost: 12378,
+    targetedJobs: 12,
   },
   {
+    id: "002",
+    day: "Tuesday",
     jobs: 13,
-    cost: 345678,
+    targetedJobs: 34,
   },
   {
+    id: "003",
+    day: "Wednesday",
     jobs: 15,
-    cost: 234567,
+    targetedJobs: 23,
   },
   {
+    id: "004",
+    day: "Thursday",
     jobs: 17,
-    cost: 234567,
+    targetedJobs: 23,
   },
+  {
+    id: "005",
+    day: "Friday",
+    jobs: 19,
+    targetedJobs: 23,
+  },
+  {
+    id: "006",
+    day: "Saturday",
+    jobs: 21,
+    targetedJobs: 23,
+  },
+  {
+    id: "007",
+    day: "Sunday",
+    jobs: 23,
+    targetedJobs: 23,
+  },
+  {
+    id: "008",
+    day: "Monday",
+    jobs: 25,
+    targetedJobs: 34,
+  },
+  {
+    id: "009",
+    day: "Tuesday",
+    jobs: 27,
+    targetedJobs: 45,
+  },
+  {
+    id: "010",
+    day: "Wednesday",
+    jobs: 29,
+    targetedJobs: 56,
+  },
+  {
+    id: "011",
+    day: "Thursday",
+    jobs: 31,
+    targetedJobs: 67,
+  },
+  // Add more data points as needed
 ];
 
 export const shift3Data = [
   {
+    id: "001",
+    day: "Monday",
     jobs: 11,
-    cost: 12378,
+    targetedJobs: 12,
   },
   {
+    id: "002",
+    day: "Tuesday",
     jobs: 15,
-    cost: 345678,
+    targetedJobs: 34,
   },
   {
+    id: "003",
+    day: "Wednesday",
     jobs: 19,
-    cost: 234567,
+    targetedJobs: 23,
   },
   {
+    id: "004",
+    day: "Thursday",
     jobs: 12,
-    cost: 234567,
+    targetedJobs: 23,
   },
   {
+    id: "005",
+    day: "Friday",
     jobs: 16,
-    cost: 234567,
+    targetedJobs: 23,
   },
   {
+    id: "006",
+    day: "Saturday",
     jobs: 24,
-    cost: 234567,
+    targetedJobs: 24,
   },
   {
+    id: "007",
+    day: "Sunday",
     jobs: 29,
-    cost: 234567,
+    targetedJobs: 29,
   },
+  {
+    id: "008",
+    day: "Monday",
+    jobs: 20,
+    targetedJobs: 34,
+  },
+  {
+    id: "009",
+    day: "Tuesday",
+    jobs: 32,
+    targetedJobs: 45,
+  },
+  {
+    id: "010",
+    day: "Wednesday",
+    jobs: 18,
+    targetedJobs: 56,
+  },
+  {
+    id: "011",
+    day: "Thursday",
+    jobs: 13,
+    targetedJobs: 67,
+  },
+  {
+    id: "012",
+    day: "Friday",
+    jobs: 17,
+    targetedJobs: 78,
+  },
+  {
+    id: "013",
+    day: "Saturday",
+    jobs: 22,
+    targetedJobs: 89,
+  },
+  {
+    id: "014",
+    day: "Sunday",
+    jobs: 28,
+    targetedJobs: 90,
+  },
+  // Add more data points as needed
 ];
-
 export const MeanData = [
   {
     jobs: 11,
-    cost: 12378,
+    targetedJobs: 12378,
   },
   {
     jobs: 15,
-    cost: 345678,
+    targetedJobs: 345678,
   },
   {
     jobs: 19,
-    cost: 234567,
+    targetedJobs: 234567,
   },
   {
     jobs: 12,
-    cost: 234567,
+    targetedJobs: 234567,
   },
   {
     jobs: 16,
-    cost: 234567,
+    targetedJobs: 234567,
   },
   {
     jobs: 24,
-    cost: 234567,
+    targetedJobs: 234567,
   },
   {
     jobs: 29,
-    cost: 234567,
+    targetedJobs: 234567,
   },
 ];
+
 export const LeftLineData = [
   {
     label: "Jan",
