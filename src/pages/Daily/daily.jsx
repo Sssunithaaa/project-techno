@@ -1,47 +1,117 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./daily.css";
-import { Link } from "react-router-dom"; // Removed BrowserRouter and Route imports
-import DailyView from "./dailyview"; // Corrected import statement
+import Select from "react-select";
 
 const Daily = () => {
   const [employeeName, setEmployeeName] = useState("");
   const [selectedShift, setSelectedShift] = useState("");
   const [selectedMachines, setSelectedMachines] = useState([]);
-  const [machines] = useState(["M1", "M2", "M3", "M4", "M5", "M6"]); // Available machines
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [machines] = useState([
+    { label: "M1", value: "M1" },
+    { label: "M2", value: "M2" },
+    { label: "M3", value: "M3" },
+    { label: "M4", value: "M4" },
+    { label: "M5", value: "M5" },
+    { label: "M6", value: "M6" },
+  ]);
+
+  const [submittedData, setSubmittedData] = useState(null); // State to store submitted data
+  const [targetAchievedArray, setTargetAchievedArray] = useState([]); // Array to store target achieved for each machine
+  const [meanTargetAchieved, setMeanTargetAchieved] = useState(0); // State to store the mean of target achieved
+
+  useEffect(() => {
+    // Calculate mean of target achieved whenever targetAchievedArray changes
+    const calculateMean = () => {
+      if (targetAchievedArray.length > 0) {
+        const sum = targetAchievedArray.reduce((acc, curr) => acc + curr, 0);
+        const mean = sum / targetAchievedArray.length;
+        setMeanTargetAchieved(mean);
+      } else {
+        setMeanTargetAchieved(0);
+      }
+    };
+
+    calculateMean();
+  }, [targetAchievedArray]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", {
+    const formData = {
       employeeName,
       selectedShift,
       selectedMachines,
-    });
+    };
+
+    // Store the submitted data
+    setSubmittedData(formData);
+
+    // Clear the targetAchievedArray when the form is submitted
+    setTargetAchievedArray([]);
   };
 
-  const handleMachineChange = (event) => {
-    const { value, checked } = event.target;
-    if (checked) {
-      setSelectedMachines((prevSelectedMachines) => [
-        ...prevSelectedMachines,
-        value,
-      ]);
-    } else {
-      setSelectedMachines((prevSelectedMachines) =>
-        prevSelectedMachines.filter((machine) => machine !== value)
+  const handleMachineChange = (selectedOptions) => {
+    setSelectedMachines(selectedOptions);
+  };
+
+  const handleKeyDown = (event) => {
+    // Calculate mean of target achieved when Enter key is pressed
+    if (event.key === "Enter") {
+      const targetArray = submittedData.selectedMachines.map(
+        (machine) => machine.targetAchieved || 0
       );
+      setTargetAchievedArray(targetArray);
     }
   };
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+  if (submittedData) {
+    // If form submitted, display the submitted data
+    return (
+      <div>
+        <h1 className="daily-h1"> Daily Submissions</h1>
+        <p className="efficiency">Efficiency: {meanTargetAchieved}</p>
+        <div className="daily-data">
+          {/* Parent container to hold all machine boxes */}
+          <div className="big-box">
+            {submittedData.selectedMachines.map((machine, index) => (
+              <div key={index} className="daily-box">
+                <h3 className="machine-label">Machine: {machine.label}</h3>
+                <p className="employee-name">
+                  Employee Name: {submittedData.employeeName}
+                </p>
+                <p className="shift">Shift: {submittedData.selectedShift}</p>
+                <input
+                  type="number"
+                  placeholder="Target Achieved"
+                  className="machine-target-input"
+                  onChange={(e) => {
+                    const newTargetArray = [...targetAchievedArray];
+                    newTargetArray[index] = parseInt(e.target.value) || 0;
+                    setTargetAchievedArray(newTargetArray);
+                  }}
+                />
+                <p className="total-target">
+                  Total Target: <span>100</span>
+                </p>
+                <label className="breakdown-label">
+                  <input type="checkbox" className="breakdown-checkbox" />
+                  Breakdown
+                </label>
+              </div>
+            ))}
+            <label className="partialshift-label">
+              <input type="checkbox" className="partialshift-checkbox" />
+              PartialShift
+            </label>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
+      <h2 className="form-title">Daily Entry Form</h2>
       <div className="daily-entry-form">
-        <h2 className="form-title">Daily Entry Form</h2>
         <form onSubmit={handleSubmit} className="animated-form">
           <div className="form-group animated-form-item">
             <label htmlFor="employeeName" className="animated-label">
@@ -75,30 +145,25 @@ const Daily = () => {
           </div>
           <div className="form-group animated-form-item">
             <label className="animated-label">Machines:</label>
-            <div className="dropdown">
-              <button onClick={toggleDropdown} className="dropdown-toggle">
-                {dropdownOpen ? "Close" : "Open"} Machines
-              </button>
-              {dropdownOpen && (
-                <div className="dropdown-menu">
-                  {machines.map((machine) => (
-                    <label key={machine} className="checkbox-option">
-                      <input
-                        type="checkbox"
-                        value={machine}
-                        checked={selectedMachines.includes(machine)}
-                        onChange={handleMachineChange}
-                      />
-                      <span className="checkbox-label">{machine}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-            </div>
+            <Select
+              options={machines}
+              value={selectedMachines}
+              onChange={handleMachineChange}
+              isMulti
+              placeholder="Select Machines"
+              className="dropdown-select"
+              classNamePrefix="select"
+              menuPlacement="auto"
+              menuPortalTarget={document.body}
+              closeMenuOnSelect={false}
+              hideSelectedOptions={false}
+              isSearchable
+              isClearable
+              // You can add more props as needed
+            />
           </div>
-
           <button type="submit" className="submit-btn animated-button">
-            <Link to="/dailyView">Submit</Link>
+            Submit
           </button>
         </form>
       </div>

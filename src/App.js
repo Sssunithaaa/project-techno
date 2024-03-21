@@ -14,6 +14,7 @@ import Jobs from "./pages/jobs/jobs.jsx";
 import { breakdownData } from "./data.js";
 import Daily from "./pages/Daily/daily.jsx";
 import Charts from "./pages/chart/chart.jsx";
+import Toolchart from "./pages/Toolchart/toolchart.jsx";
 function App() {
   const [theme, setTheme] = useState("light");
 
@@ -71,6 +72,10 @@ function App() {
         {
           path: "/chart",
           element: <Charts />,
+        },
+        {
+          path: "/Toolchart",
+          element: <Toolchart />,
         },
       ],
     },

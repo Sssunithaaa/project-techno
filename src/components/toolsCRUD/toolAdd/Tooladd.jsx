@@ -16,31 +16,48 @@ const AddTool = ({ open, handleClose, handleAddTool }) => {
   const [toolName, setToolName] = useState("");
   const [maxLength, setMaxLength] = useState("");
   const [cost, setCost] = useState("");
-  const [toolNumber, setToolNumber] = useState(1); // Initialize toolNumber state to 1
+  const [numTools, setNumTools] = useState(1); // State to track the number of tools
+  const [toolNumbers, setToolNumbers] = useState(
+    Array.from({ length: 3 }, (_, i) => i + 1)
+  );
 
   // Function to generate tool numbers dynamically based on tool name
-  const generateToolNumbers = (name) => {
-    return Array.from({ length: 3 }, (_, i) => `${name}${i + 1}`);
+  const generateToolNumbers = (name, numTools) => {
+    return Array.from({ length: numTools }, (_, i) => `${name}${i + 1}`);
   };
 
   const handleAdd = () => {
-    if (toolName && maxLength && cost && toolNumber) {
-      const newTool = {
-        id: Math.floor(Math.random() * 1000), // Generate a random ID for the new tool
-        name: toolName,
-        code: "", // You may need to generate a unique code or handle it differently
-        quantity: 0, // Default quantity
-        maxLength: parseFloat(maxLength), // Convert to float
-        cost: parseFloat(cost), // Convert to float
-        toolNumber: toolNumber, // Use the selected toolNumber
-      };
-      handleAddTool(newTool);
+    if (toolName && maxLength && cost && numTools) {
+      const newTools = [];
+      for (let i = 0; i < numTools; i++) {
+        const toolNumber = toolNumbers[i];
+        const newTool = {
+          id: Math.floor(Math.random() * 1000), // Generate a random ID for the new tool
+          name: toolName,
+          code: "", // You may need to generate a unique code or handle it differently
+          quantity: 0, // Default quantity
+          maxLength: parseFloat(maxLength), // Convert to float
+          cost: parseFloat(cost), // Convert to float
+          toolNumber: toolNumber, // Use the selected toolNumber
+        };
+        newTools.push(newTool);
+      }
+      handleAddTool(newTools);
       setToolName("");
       setMaxLength("");
       setCost("");
+      setNumTools(1);
       handleClose();
     } else {
       alert("Please fill in all fields");
+    }
+  };
+
+  const handleNumToolsChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value)) {
+      setNumTools(value);
+      setToolNumbers(Array.from({ length: value }, (_, i) => i + 1));
     }
   };
 
@@ -52,11 +69,8 @@ const AddTool = ({ open, handleClose, handleAddTool }) => {
           label="Tool Name"
           value={toolName}
           onChange={(e) => {
-            console.log("Tool Name Change Event:", e);
-            console.log("Tool Name Value:", e.target.value);
             setToolName(e.target.value);
-            // Update toolNumber options dynamically when toolName changes
-            setToolNumber(1); // Reset toolNumber to 1
+            setToolNumbers(Array.from({ length: numTools }, (_, i) => i + 1)); // Reset tool numbers when tool name changes
           }}
           variant="outlined"
           fullWidth
@@ -81,27 +95,35 @@ const AddTool = ({ open, handleClose, handleAddTool }) => {
           size="large"
           margin="normal"
         />
-        {toolName ? (
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Select Tool Number</InputLabel>
-            <Select
-              value={toolNumber}
-              onChange={(e) => {
-                console.log("Tool Number Change Event:", e);
-                console.log("Tool Number Value:", e ? e.target.value : null); // Check if event object is defined
-                setToolNumber(e.target.value);
-              }}
-              variant="outlined"
-            >
-              {generateToolNumbers(toolName).map((number) => (
-                <MenuItem key={number} value={number}>
-                  {number}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        ) : (
-          <p>Loading...</p>
+        <TextField
+          label="Number of Tools"
+          type="number"
+          value={numTools}
+          onChange={handleNumToolsChange}
+          variant="outlined"
+          fullWidth
+          size="large"
+          margin="normal"
+        />
+        {toolName && (
+          <>
+            {toolNumbers.map((toolNumber) => (
+              <FormControl key={toolNumber} fullWidth margin="normal">
+                <InputLabel>Select Tool Number {toolNumber}</InputLabel>
+                <Select
+                  value={toolNumber}
+                  onChange={(e) => {}}
+                  variant="outlined"
+                >
+                  {generateToolNumbers(toolName, numTools).map((number) => (
+                    <MenuItem key={number} value={number}>
+                      {number}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ))}
+          </>
         )}
       </DialogContent>
       <DialogActions>

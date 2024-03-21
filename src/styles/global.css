@@ -18,6 +18,7 @@ a {
 
 .container {
   display: flex;
+  width: auto;
 }
 .menuContainer {
   width: 250px;

@@ -13,6 +13,7 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
   const [selectedDayData, setSelectedDayData] = useState([]);
   const [data, setData] = useState(null);
   const [angle, setAngle] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Define colorRange outside of the useEffect hook
   const colorRange = [
@@ -30,9 +31,9 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
   useEffect(() => {
     setSelectedDayData(OnDayChangeShift2);
 
-    if (selectedDay) {
+    if (selectedDay && OnDayChangeShift2.length > 0) {
       const efficiencyByShift = {};
-      selectedDayData.forEach((dataPoint) => {
+      OnDayChangeShift2.forEach((dataPoint) => {
         if (!efficiencyByShift[dataPoint.id]) {
           efficiencyByShift[dataPoint.id] = {
             totalTargetedJobs: 0,
@@ -43,7 +44,6 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
           dataPoint.targetedJobs;
         efficiencyByShift[dataPoint.id].totalJobs += dataPoint.jobs;
       });
-
       // Calculate shiftIds here
       const shiftIds = Object.keys(efficiencyByShift).map(
         (shift, index) => shift - "${index + 1}"
@@ -78,8 +78,13 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
       });
 
       setAngle(angle);
+      setLoading(false);
     }
   }, [selectedDay, OnDayChangeShift2]);
+
+  if (loading) {
+    return <div>Loading...</div>; // Display loading indicator while data is being fetched
+  }
 
   const options = {
     responsive: true,

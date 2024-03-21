@@ -72,8 +72,8 @@ export const menu = [
       },
       {
         id: 2,
-        title: "Logs",
-        url: "/",
+        title: "Toolchart",
+        url: "/Toolchart",
         icon: "log.svg",
       },
     ],
@@ -659,5 +659,40 @@ export const JobsData = [
     length: "40",
     holesCount: "20",
     toolCode: "TC011",
+  },
+];
+
+export const MachinesData = [
+  {
+    id: 1,
+    name: "Machine 1",
+  },
+  {
+    id: 2,
+    name: "Machine 2",
+  },
+  {
+    id: 3,
+    name: "Machine 3",
+  },
+  {
+    id: 4,
+    name: "Machine 4",
+  },
+  {
+    id: 5,
+    name: "Machine 5",
+  },
+  {
+    id: 6,
+    name: "Machine 6",
+  },
+  {
+    id: 7,
+    name: "Machine 7",
+  },
+  {
+    id: 8,
+    name: "Machine 8",
   },
 ];

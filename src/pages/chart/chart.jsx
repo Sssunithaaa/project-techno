@@ -12,7 +12,18 @@ import MeanChart from "../../charts/MeanChart/Meanchart.jsx";
 import FilterMenu from "../../charts/FilterMenu.js";
 
 const Charts = ({ onDayChange }) => {
-  const [selectedDay, setSelectedDay] = useState("All Days");
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const date = new Date();
+  const currentDay = days[date.getDay()];
+  const [selectedDay, setSelectedDay] = useState(currentDay);
   const [onDayChangeShift1, setOnDayChangeShift1] = useState([]);
   const [onDayChangeShift2, setOnDayChangeShift2] = useState([]);
   const [onDayChangeShift3, setOnDayChangeShift3] = useState([]);
