@@ -12,6 +12,7 @@ import Job from "./pages/jobs/job";
 import Tool from "./pages/tools/tool";
 import BreakDown from "./pages/breakdown/breakdowns";
 import Homepage from "./pages/home/homepage";
+import ToolCharts from "./pages/Toolchart/ToolCharts";
 const App = () => {
   const {
     setCurrentColor,
@@ -48,7 +49,7 @@ const App = () => {
             <div>
               <Routes>
                 <Route path="/" element={<Home />}></Route>
-                <Route path="/toolchart" element={<Toolchart />}></Route>
+                <Route path="/toolchart" element={<ToolCharts />}></Route>
                 <Route path="/employees" element={<Employee />}></Route>
                 <Route path="/machines" element={<Machine/>}></Route>
                 <Route path="/jobs" element={<Job/>}></Route>
