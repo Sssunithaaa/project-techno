@@ -3,15 +3,15 @@ import React, { useState, useEffect } from "react";
 import Topbox from "../../components/topbox/topbox";
 import "./home.css";
 import TopRightbox from "../../components/toprightbox/toprightbox.jsx";
-import BigChart from "../../charts/BigChart/BigChart.jsx";
-import LeftChart from "../../charts/leftLinechart/leftlinechart.jsx";
-import { fetchShiftsForDay1 } from "../../charts/shift1chart/shift1chart.jsx";
-import { fetchShiftsForDay2 } from "../../charts/shift2chart/shift2chart.jsx";
-import { fetchShiftsForDay3 } from "../../charts/shift3chart/shift3chart.jsx";
-import Shift1Chart from "../../charts/shift1chart/shift1chart.jsx";
-import Shift2Chart from "../../charts/shift2chart/shift2chart.jsx";
-import Shift3Chart from "../../charts/shift3chart/shift3chart.jsx";
-import MeanChart from "../../charts/MeanChart/Meanchart.jsx";
+import BigChart from "../../Charts/BigChart/BigChart.jsx";
+import LeftChart from "../../Charts/leftLinechart/leftlinechart.jsx";
+import { fetchShiftsForDay1 } from "../../Charts/shift1chart/shift1chart.jsx";
+import { fetchShiftsForDay2 } from "../../Charts/shift2chart/shift2chart.jsx";
+import { fetchShiftsForDay3 } from "../../Charts/shift3chart/shift3chart.jsx";
+import Shift1Chart from "../../Charts/shift1chart/shift1chart.jsx";
+import Shift2Chart from "../../Charts/shift2chart/shift2chart.jsx";
+import Shift3Chart from "../../Charts/shift3chart/shift3chart.jsx";
+import MeanChart from "../../Charts/MeanChart/Meanchart.jsx";
 
 const Home = () => {
   const days = [

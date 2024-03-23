@@ -37,19 +37,23 @@ export const links = [
       {
         name: "Machine",
         icon: <MdInventory />,
+        link: "machines"
       },
       {
         name: "Jobs",
         icon: <MdInventory />,
+        link: "jobs"
       },
 
       {
         name: "Transactions",
         icon: <AiOutlineTransaction />,
+        link: "transactions"
       },
       {
         name: "Reports",
         icon: <HiDocumentReport />,
+        link: "reports"
       },
     ],
   },
@@ -59,10 +63,12 @@ export const links = [
       {
         name: "Tools",
         icon: <TbTools />,
+        link: "tools"
       },
       {
         name: "Breakdown",
         icon: <AiOutlineStock />,
+        link: "breakdown"
       },
     ],
   },
@@ -72,10 +78,12 @@ export const links = [
       {
         name: "Chart",
         icon: <AiOutlineCalendar />,
+        link: "chart"
       },
       {
         name: "Toolchart",
         icon: <BsKanban />,
+        link: "toolchart"
       },
     ],
   },

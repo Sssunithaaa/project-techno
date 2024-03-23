@@ -41,10 +41,10 @@ const Navbarr = () => {
           type="button"
           onClick={() => handleActiveMenu()}
           style={{ currentColor }}
-          className="relative text-xl rounded-full p-3 hover:bg-light-gray"
+          className="relative text-xl rounded-full p-3 "
         >
           <span className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2" />
-          <AiOutlineMenu />
+          <AiOutlineMenu color="white"/>
         </button>
       </TooltipComponent>
     </div>

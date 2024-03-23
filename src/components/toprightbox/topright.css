@@ -8,6 +8,16 @@
   }
 }
 
+.toprightBox {
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+.toprightBox .list {
+  overflow-y: auto;
+}
+
+
 .toprightBox .list .listItem {
   display: flex;
   align-items: center;

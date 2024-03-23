@@ -120,9 +120,8 @@ const Toolchart = () => {
   }, []);
 
   return (
-    <div className="tool-chart-container">
-      <canvas className="tool-chart" ref={tool_chartRef}></canvas>
-      <div className="additional-info">
+    <div className="tool-chart-container text-gray-100 flex flex-col w-[100%] h-auto overflow-x-hidden ">
+      {/* <div className="additional-info flex w-[100%] h-[30%]">
         <h1 className="tool-information">Tool Information</h1>
         <p className="tool-name">
           {" "}
@@ -137,7 +136,20 @@ const Toolchart = () => {
         <p className="cost">
           <h3>Cost:</h3> $100
         </p>
+      </div> */}
+      <div className="h-[100%] bg-[#33373E] p-5 flex flex-col">
+        <h2 className="text-3xl uppercase font-bold my-5">Tool Information</h2>
+        <div className="flex flex-col gap-y-5">
+          <p>Tool name:</p>
+        <p>Tool code:</p>
+        <p>Length of cut:</p>
+        <p>Cost:</p>
+        </div>
       </div>
+      <div className="w-[90%] h-[100%]">
+        <canvas className="tool-chart" ref={tool_chartRef}></canvas>
+      </div>
+      
     </div>
   );
 };

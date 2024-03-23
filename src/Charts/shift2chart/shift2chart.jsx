@@ -179,7 +179,7 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
             position: "absolute",
             width: "100%",
             textAlign: "center",
-            bottom: "-5px", // Adjust the distance from the bottom of the gauge
+            bottom: "-0px", // Adjust the distance from the bottom of the gauge
             color: "#FFFFFF", // Text color
             fontSize: "18px", // Adjust text size as needed
           }}

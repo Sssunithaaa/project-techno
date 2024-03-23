@@ -5,8 +5,13 @@ import { useStateContext } from "./context/ContextProvider";
 import Navbarr from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Home from "./pages/home/home";
-import Daily from "./pages/Daily/daily";
 import Toolchart from "./pages/Toolchart/toolchart";
+import Employee from "./pages/employees/employees";
+import Machine from "./pages/machines/machine";
+import Job from "./pages/jobs/job";
+import Tool from "./pages/tools/tool";
+import BreakDown from "./pages/breakdown/breakdowns";
+import Homepage from "./pages/home/homepage";
 const App = () => {
   const {
     setCurrentColor,
@@ -20,29 +25,37 @@ const App = () => {
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <BrowserRouter>
-        <div className="flex relative dark:bg-main-dark-bg">
+        <div className="flex relative bg-main-dark-bg">
           {activeMenu ? (
-            <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
+            <div className="w-72 fixed sidebar ">
               <Sidebar />
             </div>
           ) : (
-            <div className="w-0 dark:bg-secondary-dark-bg">
+            <div className="w-0 ">
               <Sidebar />
             </div>
           )}
           <div
             className={
               activeMenu
-                ? "dark:bg-main-dark-bg  bg-main-bg min-h-screen md:ml-72 w-full  "
-                : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
+                ? "bg-main-dark-bg min-h-screen md:ml-72 w-full  "
+                : "bg-main-dark-bg  w-full min-h-screen flex-2 "
             }
           >
-            <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
+            <div className="fixed md:static bg-main-dark-bg navbar w-full ">
               <Navbarr />
             </div>
             <div>
               <Routes>
                 <Route path="/" element={<Home />}></Route>
+                <Route path="/toolchart" element={<Toolchart />}></Route>
+                <Route path="/employees" element={<Employee />}></Route>
+                <Route path="/machines" element={<Machine/>}></Route>
+                <Route path="/jobs" element={<Job/>}></Route>
+                <Route path = "/tools" element={<Tool/>}></Route>
+                <Route path="/breakdown" element={<BreakDown/>}></Route>
+                <Route path ="/home" element={<Homepage/>}></Route>
+
               </Routes>
             </div>
           </div>
