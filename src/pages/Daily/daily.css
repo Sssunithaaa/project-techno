@@ -6,7 +6,9 @@
   font-size: 3.5rem;
   top: 20px;
 }
-
+#body {
+  height: 100%;
+}
 .daily-entry-form {
   max-width: 600px; /* Increase max-width */
   margin: 0 auto;
@@ -239,4 +241,9 @@
 
 .partialshift-checkbox {
   margin-right: 5px;
+}
+
+.daily-submisssion-btn {
+  color: whitesmoke;
+  background-color: primary;
 }

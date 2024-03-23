@@ -1,91 +1,55 @@
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-
-import Employees from "./pages/employees/employee";
-import Machines from "./pages/machines/machines";
-import Home from "./pages/home/home.jsx";
-import Navbar from "./components/navbar/navbar";
-import Footer from "./components/footer/footer";
-import Menu from "./components/menu/menu";
-import React, { useState } from "react";
-import Login from "./pages/login/login.jsx";
-import Tools from "./pages/tools/tools.jsx";
-import Breakdown from "./pages/breakdown/breakdown.jsx";
-import Jobs from "./pages/jobs/jobs.jsx";
-import { breakdownData } from "./data.js";
-import Daily from "./pages/Daily/daily.jsx";
-import Charts from "./pages/chart/chart.jsx";
-import Toolchart from "./pages/Toolchart/toolchart.jsx";
-function App() {
-  const [theme, setTheme] = useState("light");
-
-  const Layout = () => {
-    return (
-      <div className={`main ${theme} `}>
-        <Navbar theme={theme} setTheme={setTheme} />
-        <div className="container">
-          <div className="menuContainer">
-            <Menu />
-          </div>
-          <div className="contentContainer">
-            <Outlet />
+import React from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import "./App.css";
+import { useStateContext } from "./context/ContextProvider";
+import Navbarr from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import Home from "./pages/home/home";
+import Daily from "./pages/Daily/daily";
+import Toolchart from "./pages/Toolchart/toolchart";
+const App = () => {
+  const {
+    setCurrentColor,
+    setCurrentMode,
+    currentMode,
+    activeMenu,
+    currentColor,
+    themeSettings,
+    setThemeSettings,
+  } = useStateContext();
+  return (
+    <div className={currentMode === "Dark" ? "dark" : ""}>
+      <BrowserRouter>
+        <div className="flex relative dark:bg-main-dark-bg">
+          {activeMenu ? (
+            <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
+              <Sidebar />
+            </div>
+          ) : (
+            <div className="w-0 dark:bg-secondary-dark-bg">
+              <Sidebar />
+            </div>
+          )}
+          <div
+            className={
+              activeMenu
+                ? "dark:bg-main-dark-bg  bg-main-bg min-h-screen md:ml-72 w-full  "
+                : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
+            }
+          >
+            <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
+              <Navbarr />
+            </div>
+            <div>
+              <Routes>
+                <Route path="/" element={<Home />}></Route>
+              </Routes>
+            </div>
           </div>
         </div>
-        <Footer />
-      </div>
-    );
-  };
-
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Layout />,
-      children: [
-        {
-          path: "/",
-          element: <Home />,
-        },
-        {
-          path: "/employees",
-          element: <Employees />,
-        },
-        {
-          path: "/machines",
-          element: <Machines />,
-        },
-        {
-          path: "/jobs",
-          element: <Jobs />,
-        },
-        {
-          path: "/tools",
-          element: <Tools />,
-        },
-        {
-          path: "/breakdown",
-          element: <Breakdown breakdownData={breakdownData} />,
-        },
-
-        {
-          path: "/Daily",
-          element: <Daily />,
-        },
-        {
-          path: "/chart",
-          element: <Charts />,
-        },
-        {
-          path: "/Toolchart",
-          element: <Toolchart />,
-        },
-      ],
-    },
-    {
-      path: "/login",
-      element: <Login />,
-    },
-  ]);
-
-  return <RouterProvider router={router} />;
-}
+      </BrowserRouter>
+    </div>
+  );
+};
 
 export default App;

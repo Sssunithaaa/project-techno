@@ -66,7 +66,7 @@ const Daily = () => {
   if (submittedData) {
     // If form submitted, display the submitted data
     return (
-      <div>
+      <div id="body">
         <h1 className="daily-h1"> Daily Submissions</h1>
         <p className="efficiency">Efficiency: {meanTargetAchieved}</p>
         <div className="daily-data">
@@ -102,6 +102,7 @@ const Daily = () => {
               <input type="checkbox" className="partialshift-checkbox" />
               PartialShift
             </label>
+            <button className="daily-submisssion-btn">submit</button>
           </div>
         </div>
       </div>
