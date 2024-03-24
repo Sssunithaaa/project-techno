@@ -14,6 +14,7 @@ import BreakDown from "./pages/breakdown/breakdowns";
 import Homepage from "./pages/home/homepage";
 import ToolCharts from "./pages/Toolchart/ToolCharts";
 import Jobs from "./pages/jobs/jobs";
+import Daily from "./pages/Daily/dailyy";
 const App = () => {
   const {
     setCurrentColor,
@@ -58,6 +59,7 @@ const App = () => {
                 <Route path="/breakdown" element={<BreakDown/>}></Route>
                 <Route path ="/home" element={<Homepage/>}></Route>
                 <Route path="/job" element={<Jobs/>}></Route>
+                <Route path="/dailyentry" element={<Daily/>}></Route>
               </Routes>
             </div>
           </div>
