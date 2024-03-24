@@ -11,9 +11,12 @@ import {
   Filter,
 } from "@syncfusion/ej2-react-grids";
 import { MachinesData } from "../../data";
-
+import Config from "../../components/machineconfig/config";
 const Machine = () => {
   const [data, setData] = useState(MachinesData);
+   const [selectedMachine, setSelectedMachine] = useState(null);
+  const [openView, setOpenView] = useState(false);
+
 
   useEffect(() => {
     // Fetch initial data from the backend when the component mounts
@@ -74,6 +77,16 @@ const Machine = () => {
     mode: "Dialog",
   };
 
+   const handleMachineClick = (args) => {
+    console.log(args)
+    setSelectedMachine(args.data);
+    console.log(openView)
+    setOpenView(true); 
+  };
+
+  const handleCloseView = () => {
+    setOpenView(false); // Close the Config component
+  };
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2  pt-2  md:m-10 mt-24  md:p-10 bg-white rounded-3xl">
       <GridComponent
@@ -86,6 +99,7 @@ const Machine = () => {
         editSettings={editing}
         toolbar={["Add", "Edit", "Delete", "Update", "Cancel"]}
         actionComplete={handleActionComplete}
+        rowSelected={handleMachineClick} 
       >
         <ColumnsDirective>
           {MachinesGrid.map((item, index) => (
@@ -100,6 +114,13 @@ const Machine = () => {
         </ColumnsDirective>
         <Inject services={[Toolbar, Edit, Page,Filter]} />
       </GridComponent>
+      {openView && selectedMachine && (
+        <Config
+          selectedMachine={selectedMachine}
+          handleCloseView={handleCloseView}
+          openView={openView}
+        />
+      )}
     </div>
   );
 };

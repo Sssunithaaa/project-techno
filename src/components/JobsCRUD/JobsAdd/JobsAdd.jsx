@@ -59,7 +59,8 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+  <div className="z-[100001]" >
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
       <DialogTitle>Add New Job</DialogTitle>
       <DialogContent>
         <TextField
@@ -143,6 +144,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
         </Button>
       </DialogActions>
     </Dialog>
+  </div>
   );
 };
 

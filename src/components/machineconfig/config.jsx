@@ -1,3 +1,4 @@
+import { Dialog } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 
@@ -58,11 +59,31 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   const handleNumToolsChange = (e) => {
     setNumTools(parseInt(e.target.value) || 1);
   };
-
+  console.log(selectedMachine.id)
   return (
-    <div>
-      <h2>Machine Configuration</h2>
-      <p>Selected Machine: {selectedMachine.label}</p>
+    <Dialog open={openView} onClose={handleCloseView}  maxWidth="md" sx={{
+    "& .MuiDialog-paper": {
+      width: "70%", // Adjust width as needed
+      maxHeight: "130vh", // Adjust height as needed
+      paddingInline:"40px",
+      padding: "20px", // Add padding
+      borderRadius: "10px", // Add border radius
+      display: "flex",
+      flexDirection:"column",
+      rowGap: "20px"
+
+    },
+    "& .MuiDialogTitle-root": {
+      textAlign: "center", // Center align the title
+    },
+    "& .MuiDialogActions-root": {
+      justifyContent: "center", // Center align the actions
+    },
+  }} 
+  className="font-medium flex flex-col gap-y-4"
+  >
+      <h2 className="text-center font-bold text-2xl text-gray-800 ">Machine Configuration</h2>
+      <p>Selected Machine: {selectedMachine.id}</p>
       <div>
         <label>Select Job:</label>
         <Select options={jobs} value={selectedJob} onChange={handleJobChange} />
@@ -87,8 +108,8 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
           />
         </div>
       )}
-      <button onClick={handleCloseView}>Close Config</button>
-    </div>
+      <button className="px-5 py-2 bg-blue-500 rounded-md hover:bg-blue-700 font-semibold text-white w-[20%] mx-auto" onClick={handleCloseView}>Close Config</button>
+    </Dialog>
   );
 };
 

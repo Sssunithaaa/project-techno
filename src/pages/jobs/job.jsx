@@ -9,12 +9,15 @@ import {
   Edit,
   Page,
   Filter,
-  Group
+  Group,
+  
 } from "@syncfusion/ej2-react-grids";
 import { JobsData } from "../../data";
+import AddJob from "../../components/JobsCRUD/JobsAdd/JobsAdd";
 
 const Job = () => {
   const [data, setData] = useState(JobsData);
+  const [showAddJob, setShowAddJob] = useState(false);
 
   useEffect(() => {
     // Fetch initial data from the backend when the component mounts
@@ -49,6 +52,9 @@ const Job = () => {
     }
   };
 
+  const toggleAddJob = () => {
+    setShowAddJob(!showAddJob);
+  };
 
   const jobGrid = [
     {
@@ -76,24 +82,40 @@ const Job = () => {
       textAlign: "Center",
     },
     {
-        field: "toolCode",
-        headerText:"Tool code",
-        width:"150",
-        textAlign:"Center"
+      field: "toolCode",
+      headerText:"Tool code",
+      width:"150",
+      textAlign:"Center"
     }
   ];
 
   const editing = {
-    allowAdding: true,
     allowDeleting: true,
     allowEditing: true,
-    
-    
     mode: "Dialog",
+  };
+    const [openAddDialog, setOpenAddDialog] = useState(false); // State to control the visibility of the Add Job dialog
+ const handleAddJob = (newJob) => {
+    setData([...data, newJob]);
+    setOpenAddDialog(false); // Close the Add Job dialog after adding a job
+  };
+  const handleOpenAddDialog = () => {
+    setOpenAddDialog(true);
+  };
+
+  const handleCloseAddDialog = () => {
+    setOpenAddDialog(false);
   };
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2  pt-2  md:m-10 mt-24  md:p-10 bg-white rounded-3xl">
+
+        <button className="px-5 py-3 bg-blue-500 text-white mr-2 my-2 rounded-md hover:bg-blue-700 font-semibold" onClick={handleOpenAddDialog}>Add Job</button>
+     <AddJob
+        open={openAddDialog}
+        handleClose={handleCloseAddDialog}
+        handleAddJob={handleAddJob}
+      />
       <GridComponent
         dataSource={data}
         width="auto"
@@ -103,7 +125,7 @@ const Job = () => {
         allowGrouping
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-        toolbar={["Add", "Edit", "Delete", "Update", "Cancel"]}
+        toolbar={["Edit", "Delete"]}
         actionComplete={handleActionComplete}
       >
         <ColumnsDirective>
@@ -119,6 +141,7 @@ const Job = () => {
         </ColumnsDirective>
         <Inject services={[Toolbar, Edit, Page,Filter,Group]} />
       </GridComponent>
+   
     </div>
   );
 };

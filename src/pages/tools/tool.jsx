@@ -12,9 +12,10 @@ import {
   Group
 } from "@syncfusion/ej2-react-grids";
 import { ToolsData } from "../../data";
-
+import AddTool from "../../components/toolsCRUD/toolAdd/Tooladd";
 const Tool = () => {
   const [data, setData] = useState(ToolsData);
+    const [openAddDialog, setOpenAddDialog] = useState(false);
 
   useEffect(() => {
     // Fetch initial data from the backend when the component mounts
@@ -97,9 +98,25 @@ const Tool = () => {
     
     mode: "Dialog",
   };
+   const handleOpenAddDialog = () => {
+    setOpenAddDialog(true);
+  };
+  const handleCloseAddDialog = () => {
+    setOpenAddDialog(false);
+  };
+  const handleAddTool = (newTool) => {
+    setData([...data, newTool]);
+    setOpenAddDialog(false); // Close the AddTool dialog after adding a tool
+  };
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2  pt-2  md:m-10 mt-24  md:p-10 bg-white rounded-3xl">
+              <button className="px-5 py-3 bg-blue-500 text-white mr-2 my-2 rounded-md hover:bg-blue-700 font-semibold" onClick={handleOpenAddDialog}>Add Tool</button>
+<AddTool
+        open={openAddDialog}
+        handleClose={() => setOpenAddDialog(false)}
+        handleAddTool={handleAddTool}
+      />
       <GridComponent
         dataSource={data}
         width="auto"
