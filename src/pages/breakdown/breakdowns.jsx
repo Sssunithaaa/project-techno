@@ -12,9 +12,11 @@ import {
   Group
 } from "@syncfusion/ej2-react-grids";
 import { breakdownData } from "../../data";
-
+import AddBreakdown from "./Addbreakdown";
+import ResolveBreakDown from "./ResolveBreakDown";
 const BreakDown = () => {
   const [data, setData] = useState(breakdownData);
+  const [openAddBreakdown, setOpenAddBreakdown] = useState(false); // State to control the visibility of AddBreakdown
 
   useEffect(() => {
     // Fetch initial data from the backend when the component mounts
@@ -111,9 +113,40 @@ const BreakDown = () => {
     
     mode: "Dialog",
   };
+    const [openView,setOpenView] = useState(false)
+     const [selectedBreakdown, setSelectedBreakdown] = useState(null);
+        const handleBreakdownClick = (args) => {
+    console.log(args)
+    setSelectedBreakdown(args.data);
+    console.log(openView)
+    setOpenView(true); 
+  };
+
+
+  const handleOpenAddBreakdown = () => {
+    setOpenAddBreakdown(true);
+  };
+
+  const handleCloseAddBreakdown = () => {
+    setOpenAddBreakdown(false);
+  };
+
+  const handleAddBreakdown = (newBreakdown) => {
+    // Logic to add the breakdown data
+    console.log("Adding breakdown:", newBreakdown);
+  };
+  const handleCloseView = () => {
+    setOpenView(false); // Close the Config component
+  };
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2  pt-2  md:m-10 mt-24  md:p-10 bg-white rounded-3xl">
+        <button className="px-5 py-3 bg-blue-500 text-white mr-2 my-2 rounded-md hover:bg-blue-700 font-semibold" onClick={handleOpenAddBreakdown}>Add breakdown</button>
+       <AddBreakdown
+        open={openAddBreakdown}
+        handleClose={handleCloseAddBreakdown}
+        handleAddBreakdown={handleAddBreakdown}
+      />
       <GridComponent
         dataSource={data}
         width="auto"
@@ -125,6 +158,8 @@ const BreakDown = () => {
         editSettings={editing}
         toolbar={["Add", "Edit", "Delete", "Update", "Cancel"]}
         actionComplete={handleActionComplete}
+                rowSelected={handleBreakdownClick} 
+
       >
         <ColumnsDirective>
           {breakdownGrid.map((item, index) => (
@@ -136,9 +171,18 @@ const BreakDown = () => {
               headerText={item.headerText}
             />
           ))}
+          <ColumnDirective></ColumnDirective>
         </ColumnsDirective>
+        
         <Inject services={[Toolbar, Edit, Page,Group,Filter]} />
       </GridComponent>
+      {openView && selectedBreakdown && (
+        <ResolveBreakDown
+          selectedBreakdown={selectedBreakdown}
+          handleCloseView={handleCloseView}
+          openView={openView}
+        />
+      )}
     </div>
   );
 };
